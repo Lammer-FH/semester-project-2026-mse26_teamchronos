@@ -4,3 +4,4 @@
 | Andi Graf        | AndiGr95           |
 | Linda Gan        | linda-gan          |
 | Julia Pospischek | daisiedjulietse25  |
+| Anna Nagel       | stailisic          |
