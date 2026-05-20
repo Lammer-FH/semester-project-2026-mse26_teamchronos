@@ -1,33 +1,42 @@
 <template>
   <ion-page>
-    <ion-header :translucent="false">
-      <ion-toolbar color="dark">
-        <ion-title>Room 1</ion-title>
+    <ion-header class="ion-no-border">
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-back-button default-href="/rooms" text="Rooms" />
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
 
     <ion-content :fullscreen="true">
       <div class="prototype-container">
         <div class="room-image-placeholder">
-          <span class="placeholder-text">ROOM IMAGE PLACEHOLDER</span>
+          <div class="image-icon-box">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="image-placeholder-icon">
+              <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 0 1 2.25-2.25h16.5A2.25 2.25 0 0 1 22.5 6v12a2.25 2.25 0 0 1-2.25 2.25H3.75A2.25 2.25 0 0 1 1.5 18V6ZM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0 0 21 18v-1.94l-2.69-2.689a1.5 1.5 0 0 0-2.12 0l-.88.879.97.97a.75.75 0 1 1-1.06 1.06l-5.16-5.159a1.5 1.5 0 0 0-2.12 0L3 16.06ZM18.75 9a.75.75 0 0 0 0-1.5h-.008a.75.75 0 0 0 0 1.5h.008Z" clip-rule="evenodd" />
+            </svg>
+          </div>
         </div>
 
         <div class="room-details-padding">
-          <h2>ROOM 1</h2>
-          <p class="description-text">
-            text text
-          </p>
+          <h2 class="room-title">{{ roomName }}</h2>
+
+          <p class="description-text">text text..</p>
 
           <div class="extras-row">
-            <span>  Highspeed WiFi</span>
-            <span>  Workspace</span>
+            <span class="amenity-item">
+              <ion-icon :icon="wifiOutline" class="amenity-icon" />
+              Highspeed WiFi </span>
+            <span class="amenity-item">
+              <ion-icon :icon="desktopOutline" class="amenity-icon" />
+              Workspace </span>
           </div>
 
           <div class="date-input-row">
             <div class="date-input-field">
               <span class="field-label">From</span>
               <div class="datetime-wrapper">
-                <ion-datetime-button datetime="checkin-date"></ion-datetime-button>
+                <ion-datetime-button datetime="checkin-date" />
               </div>
               <ion-modal :keep-contents-on-hidden="true">
                 <ion-datetime
@@ -35,14 +44,14 @@
                     presentation="date"
                     v-model="startDate"
                     min="2026-05-20"
-                ></ion-datetime>
+                />
               </ion-modal>
             </div>
 
             <div class="date-input-field">
               <span class="field-label">To</span>
               <div class="datetime-wrapper">
-                <ion-datetime-button datetime="checkout-date"></ion-datetime-button>
+                <ion-datetime-button datetime="checkout-date" />
               </div>
               <ion-modal :keep-contents-on-hidden="true">
                 <ion-datetime
@@ -50,14 +59,16 @@
                     presentation="date"
                     v-model="endDate"
                     :min="startDate || '2026-05-21'"
-                ></ion-datetime>
+                />
               </ion-modal>
             </div>
           </div>
 
-          <ion-button expand="block" class="check-button" @click="verifyDates" :disabled="loading">
-            {{ loading ? 'VERIFYING...' : 'CHECK AVAILABILITY' }}
-          </ion-button>
+          <div class="button-wrapper">
+            <ion-button expand="block" class="check-button" @click="verifyDates" :disabled="loading">
+              {{ loading ? 'VERIFYING...' : 'CHECK AVAILABILITY' }}
+            </ion-button>
+          </div>
 
           <div v-if="status !== 'idle'" class="minimal-feedback">
             <div v-if="status === 'available'" class="status-msg available-text">
@@ -80,14 +91,31 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonDatetime, IonDatetimeButton, IonModal, IonButton } from '@ionic/vue';
+import {
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonToolbar,
+  IonButtons,
+  IonBackButton,
+  IonDatetime,
+  IonDatetimeButton,
+  IonModal,
+  IonButton,
+  IonIcon
+} from '@ionic/vue';
+import { wifiOutline, desktopOutline } from 'ionicons/icons';
 
+
+
+
+const roomId = 1;
+const roomName = ref<string>('Room 1');
 const startDate = ref<string>('2026-05-20');
 const endDate = ref<string>('2026-05-21');
 const loading = ref<boolean>(false);
 const status = ref<string>('idle');
 const serverErrorMessage = ref<string>('');
-const roomId = 1;
 
 async function verifyDates() {
   loading.value = true;
@@ -99,7 +127,7 @@ async function verifyDates() {
 
   if (new Date(cleanStart) >= new Date(cleanEnd)) {
     status.value = 'error';
-    serverErrorMessage.value = 'Check-out must follow check-in date.';
+    serverErrorMessage.value = 'Check-out must be later than check-in date';
     loading.value = false;
     return;
   }
@@ -115,11 +143,11 @@ async function verifyDates() {
     } else {
       const errData = await response.json();
       status.value = 'error';
-      serverErrorMessage.value = errData.error || 'The request could not be executed.';
+      serverErrorMessage.value = errData.error || 'bad request';
     }
   } catch (err) {
     status.value = 'error';
-    serverErrorMessage.value = 'Connection to backend registry failed.';
+    serverErrorMessage.value = 'cannot connect to backend';
   } finally {
     loading.value = false;
   }
@@ -130,94 +158,156 @@ async function verifyDates() {
 .prototype-container {
   background: #ffffff;
   min-height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
+
+ion-toolbar {
+  --background: transparent;
+  --border-color: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
 .room-image-placeholder {
-  background: #f1f5f9;
-  height: 220px;
+  background: #cccccc;
+  height: 260px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 1px solid #cbd5e1;
+  width: 100%;
 }
 
-.placeholder-text {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  color: #94a3b8;
+.image-icon-box {
+  width: 44px;
+  height: 44px;
+  color: #222222;
 }
+
+.image-placeholder-icon {
+  width: 100%;
+  height: 100%;
+}
+
 .room-details-padding {
-  padding: 24px;
+  padding: 32px 24px;
+  text-align: center;
 }
-h2 {
-  font-size: 20px;
-  font-weight: 700;
+
+.room-title {
+  font-size: 16px;
+  font-weight: 800;
   color: #000000;
-  margin: 0 0 12px 0;
-  letter-spacing: 0.5px;
-}
-.description-text {
-  font-size: 14px;
-  line-height: 1.5;
-  color: #334155;
   margin: 0 0 16px 0;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
+
+.description-text {
+  font-size: 13px;
+  line-height: 1.4;
+  color: #000000;
+  margin: 0 auto 28px auto;
+  max-width: 92%;
+}
+
 .extras-row {
   display: flex;
-  gap: 16px;
-  font-size: 13px;
-  color: #475569;
-  margin-bottom: 24px;
+  justify-content: center;
+  gap: 24px;
+  font-size: 14px;
+  color: #000000;
+  margin-bottom: 36px;
 }
-.date-input-row {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 20px;
-}
-.date-input-field {
-  flex: 1;
-  border: 1px solid #000000;
-  padding: 10px;
-  border-radius: 4px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-height: 75px;
-}
-.field-label {
-  font-size: 11px;
-  font-weight: 600;
-  color: #64748b;
-}
-.datetime-wrapper {
+
+.amenity-item {
   display: flex;
   align-items: center;
+  gap: 8px;
+}
+
+.amenity-icon {
+  font-size: 18px;
+  color: #000000;
+}
+
+.date-input-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 28px;
+  justify-content: center;
+}
+
+.date-input-field {
+  flex: 1;
+  border: 1.5px solid #000000;
+  padding: 6px 12px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 48px;
+}
+
+.field-label {
+  font-size: 14px;
+  color: #000000;
+  margin-right: 8px;
+  font-weight: 500;
+}
+
+.datetime-wrapper {
+  flex: 1;
+  display: flex;
   justify-content: flex-start;
 }
+
+ion-datetime-button {
+  --background: transparent;
+  --color: #000000;
+  font-size: 14px;
+}
+
+ion-datetime-button::part(native) {
+  padding: 0;
+  background: transparent;
+}
+
+.button-wrapper {
+  padding: 0 2px;
+}
+
 .check-button {
-  --background: #2b5bc4;
+  --background: #3359ad;
+  --color: #ffffff;
   --border-radius: 4px;
   margin: 0;
   font-weight: 600;
-  font-size: 14px;
-  letter-spacing: 0.5px;
-  height: 44px;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+  height: 46px;
 }
+
 .minimal-feedback {
   margin-top: 20px;
   border-top: 1px dashed #cbd5e1;
   padding-top: 16px;
 }
+
 .status-msg {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
 }
+
 .available-text {
   color: #15803d;
 }
+
 .conflict-text {
   color: #b45309;
 }
+
 .error-text {
   color: #b91c1c;
 }

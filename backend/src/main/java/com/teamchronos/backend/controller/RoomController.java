@@ -52,12 +52,12 @@ public class RoomController {
             start = LocalDate.parse(startDate);
             end = LocalDate.parse(endDate);
         } catch (Exception e) {
-            response.put("error", "400 Bad Request: Date format must use yyyy-MM-dd");
+            response.put("error", "400 Bad Request: Date format must be yyyy-MM-dd");
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
 
         if (!start.isBefore(end)) {
-            response.put("error", "Validation Error: Check-out must occur after check-in.");
+            response.put("error", "Check-out must be later than check-in");
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
 
