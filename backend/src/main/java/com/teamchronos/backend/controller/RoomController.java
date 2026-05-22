@@ -1,6 +1,7 @@
 package com.teamchronos.backend.controller;
 
 import com.teamchronos.backend.controller.dto.RoomDto;
+import com.teamchronos.backend.controller.dto.RoomsResponseDto;
 import com.teamchronos.backend.controller.mapper.RoomMapper;
 import com.teamchronos.backend.service.RoomService;
 import jakarta.validation.constraints.Positive;
@@ -26,9 +27,15 @@ public class RoomController {
         this.roomMapper = roomMapper;
     }
 
-    @GetMapping(params = {"page", "size"})
-    public Page<RoomDto> findPaginated(@RequestParam("page") @PositiveOrZero int page,
-                                       @RequestParam("size") @Positive int size) {
-        return roomService.findPaginated(page, size).map(roomMapper::roomToRoomDto);
+    @GetMapping(params = {"pageIndex", "pageSize"})
+    public RoomsResponseDto findPaginated(@RequestParam("pageIndex") @PositiveOrZero int page,
+                                          @RequestParam("pageSize") @Positive int size) {
+        return RoomsResponseDto.builder()
+                .rooms(
+                        roomService.findPaginated(page, size)
+                                .map(roomMapper::roomToRoomDto)
+                                .getContent()
+                )
+                .build();
     }
 }
