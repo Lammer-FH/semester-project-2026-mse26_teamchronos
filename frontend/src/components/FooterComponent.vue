@@ -1,0 +1,34 @@
+<template>
+  <footer class="bg-light border-top py-4">
+    <div class="container">
+        <div
+          class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3"
+        >
+          <div class="d-flex flex-wrap gap-4">
+            <a href="#" class="link-dark text-decoration-none">Jobs</a>
+            <a href="/imprint" class="link-dark text-decoration-none"
+              >Impressum</a
+            >
+            <a href="#" class="link-dark text-decoration-none">AGBs</a>
+            <a href="#" class="link-dark text-decoration-none">Datenschutz</a>
+          </div>
+
+          <p class="mb-0 text-muted">© 2026 Chronos Hotel</p>
+        </div>
+    </div>
+  </footer>
+</template>
+
+<style scoped>
+.social-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #000;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+</style>
