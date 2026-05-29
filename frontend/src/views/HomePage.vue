@@ -3,17 +3,80 @@
     <NavbarComponent />
 
     <ion-content>
-      <div class="d-flex flex-column min-vh-100">
-        <!-- CONTENT -->
-        <div class="flex-grow-1">
-          <div class="container my-5" id="rooms">
-            <RoomCard v-for="room in rooms" :key="room.title" v-bind="room" />
-          </div>
-        </div>
-
-        <!-- FOOTER -->
-        <FooterComponent />
+      <div class="container-fluid p-0">
+        <img
+          src="https://images.unsplash.com/photo-1566073771259-6a8506099945"
+          class="img-fluid w-100"
+          alt="Chronos Hotel"
+        />
       </div>
+
+      <section class="container text-center py-5">
+        <h1 class="fw-bold text-uppercase mb-4">Chronos Hotel</h1>
+
+        <p class="lead mx-auto" style="max-width: 800px">
+          Welcome to <strong>Chronos Hotel</strong>, a modern hotel located in
+          the heart of Vienna. We combine elegant design, comfort, and
+          exceptional hospitality to create a memorable experience for every
+          guest.
+        </p>
+
+        <router-link to="/rooms" class="btn btn-danger px-4 btn-lg mt-4">
+          Book Now
+        </router-link>
+      </section>
+
+      <section class="container">
+        <h2 class="text-center fw-bold text-uppercase mb-4">About Us</h2>
+
+        <div class="mx-auto" style="max-width: 900px">
+          <p class="mb-4">
+            At <strong>Chronos Hotel</strong>, our mission is to provide guests
+            with a relaxing and unforgettable stay, whether they are visiting
+            Vienna for business, leisure, or a weekend getaway.
+          </p>
+
+          <p class="mb-4">
+            Our rooms have been carefully designed to combine
+            <em>modern elegance</em> with practical comfort. Bright interiors,
+            high-quality furnishings, and a welcoming atmosphere ensure that
+            guests feel at home from the moment they arrive.
+          </p>
+
+          <p class="mb-4">
+            From cozy single rooms to luxurious suites,
+            <strong>Chronos Hotel</strong> offers accommodation options suitable
+            for every type of traveler.
+          </p>
+
+          <p class="mb-4">
+            We place great importance on
+            <strong>excellent service, cleanliness, and hospitality</strong>.
+            Our dedicated team is always available to assist guests and ensure
+            that every stay exceeds expectations.
+          </p>
+
+          <p class="mb-4">
+            Complimentary high-speed Wi-Fi, modern entertainment systems, and
+            comfortable workspaces make our hotel ideal for both tourists and
+            business travelers.
+          </p>
+
+          <p class="mb-4">
+            Thanks to our central location, many of Vienna’s famous attractions,
+            restaurants, and shopping areas are within easy reach. At the same
+            time, the hotel offers a
+            <em>peaceful and relaxing environment</em>
+            where guests can unwind and recharge.
+          </p>
+
+          <p class="fs-5 fw-semibold mt-5 text-center">
+            Chronos Hotel stands for quality, comfort, and modern hospitality.
+          </p>
+        </div>
+      </section>
+
+      <FooterComponent />
     </ion-content>
   </ion-page>
 </template>
@@ -22,104 +85,4 @@
 import { IonPage, IonContent } from "@ionic/vue";
 import NavbarComponent from "@/components/NavbarComponent.vue";
 import FooterComponent from "@/components/FooterComponent.vue";
-import RoomCard from "@/components/RoomCard.vue";
-
-const rooms = [
-  {
-    subtitle: "Perfekt für eine Person",
-    title: 'Einzelzimmer "Comfort"',
-    description:
-      "Geräumiges, schönes Zimmer mit großem Fenster. Badezimmer mit Dusche und WC.",
-    image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85",
-    reverse: false,
-    features: [
-      { icon: "bi bi-person", text: "1 Person" },
-      { icon: "bi bi-house-door", text: "Doppelbett" },
-      { icon: "bi bi-droplet", text: "Dusche" },
-      { icon: "bi bi-tv", text: "TV" },
-      { icon: "bi bi-wifi", text: "WLAN" },
-      { icon: "bi bi-safe", text: "Safe" },
-    ],
-  },
-  {
-    subtitle: "Komfortabel und geräumig",
-    title: "Doppelzimmer mit Balkon",
-    description:
-      "Modernes Doppelzimmer mit Balkon, wunderschöner Aussicht und großem Badezimmer.",
-    image: "https://images.unsplash.com/photo-1566665797739-1674de7a421a",
-    reverse: true,
-    features: [
-      { icon: "bi bi-people", text: "2 Personen" },
-      { icon: "bi bi-house-door", text: "Kingsize Bett" },
-      { icon: "bi bi-cup-hot", text: "Frühstück" },
-      { icon: "bi bi-tv", text: "Smart TV" },
-      { icon: "bi bi-wifi", text: "WLAN" },
-      { icon: "bi bi-safe", text: "Safe" },
-    ],
-  },
-  {
-    subtitle: "Luxus und Entspannung",
-    title: "Deluxe Suite",
-    description:
-      "Exklusive Suite mit Wohnbereich, Whirlpool und traumhaftem Panoramablick.",
-    image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267",
-    reverse: false,
-    features: [
-      { icon: "bi bi-people", text: "4 Personen" },
-      { icon: "bi bi-stars", text: "Luxus Suite" },
-      { icon: "bi bi-droplet-half", text: "Whirlpool" },
-      { icon: "bi bi-tv", text: "Netflix TV" },
-      { icon: "bi bi-wifi", text: "Highspeed WLAN" },
-      { icon: "bi bi-cup-straw", text: "Minibar" },
-    ],
-  },
-  {
-    subtitle: "Modern und stilvoll",
-    title: "Business Zimmer",
-    description:
-      "Perfekt für Geschäftsreisen mit großem Schreibtisch, schnellem WLAN und ruhiger Atmosphäre.",
-    image: "https://images.unsplash.com/photo-1590490360182-c33d57733427",
-    reverse: true,
-    features: [
-      { icon: "bi bi-person-workspace", text: "Business" },
-      { icon: "bi bi-laptop", text: "Arbeitsplatz" },
-      { icon: "bi bi-wifi", text: "Highspeed WLAN" },
-      { icon: "bi bi-cup-hot", text: "Kaffeemaschine" },
-      { icon: "bi bi-tv", text: "Smart TV" },
-      { icon: "bi bi-safe", text: "Safe" },
-    ],
-  },
-  {
-    subtitle: "Familienfreundlich",
-    title: "Familienzimmer",
-    description:
-      "Großes Zimmer für Familien mit zusätzlichem Schlafbereich und viel Platz für Kinder.",
-    image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85",
-    reverse: false,
-    features: [
-      { icon: "bi bi-people", text: "5 Personen" },
-      { icon: "bi bi-house-heart", text: "Familienbett" },
-      { icon: "bi bi-controller", text: "Spielecke" },
-      { icon: "bi bi-tv", text: "Smart TV" },
-      { icon: "bi bi-wifi", text: "WLAN" },
-      { icon: "bi bi-cup-straw", text: "Minibar" },
-    ],
-  },
-  {
-    subtitle: "Premium Erlebnis",
-    title: "Penthouse Suite",
-    description:
-      "Luxus Penthouse mit privater Terrasse, exklusivem Service und atemberaubender Aussicht.",
-    image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb",
-    reverse: true,
-    features: [
-      { icon: "bi bi-gem", text: "Premium Suite" },
-      { icon: "bi bi-building", text: "Dachterrasse" },
-      { icon: "bi bi-cup-hot", text: "Room Service" },
-      { icon: "bi bi-tv", text: "Cinema TV" },
-      { icon: "bi bi-wifi", text: "Premium WLAN" },
-      { icon: "bi bi-stars", text: "VIP Service" },
-    ],
-  },
-];
 </script>

@@ -24,7 +24,7 @@
       </div>
 
       <div class="mt-4">
-        <button class="btn btn-danger me-3">Buchen Sie jetzt!</button>
+        <button class="btn btn-danger me-3"> Select Room </button>
       </div>
     </div>
 

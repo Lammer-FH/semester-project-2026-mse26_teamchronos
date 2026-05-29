@@ -4,23 +4,36 @@
 
     <ion-content class="flex-grow-1">
       <div class="container my-5">
-        <h2 class="display-4 mb-4">Chronos Hotel</h2>
-        <p>
+        <h1 class="display-4 fw-bold mb-5">Legal Notice</h1>
+
+        <h3 class="mb-4">Chronos Hotel</h3>
+
+        <h5>Address</h5>
+        <p class="mb-4">
           Höchstädtplatz 6<br />
-          1200 Wien<br />
-          Österreich
+          1200 Vienna<br />
+          Austria
         </p>
 
-        <h5>Kontakt</h5>
-        <p>
-          E-Mail: contact@chronos-hotel.at<br />
-          Telefon: +43 1 234 567
+        <h5>Contact Information</h5>
+        <p class="mb-4">
+          Email: contact@chronos-hotel.at<br />
+          Phone: +43 1 234 567
         </p>
 
-        <h5>Verantwortlich für den Inhalt</h5>
-        <p>
+        <h5>Responsible for Content</h5>
+        <p class="mb-4">
           Chronos Hotel Management<br />
-          Höchstädtplatz 6, 1200 Wien
+          Höchstädtplatz 6<br />
+          1200 Vienna<br />
+          Austria
+        </p>
+
+        <h5>Disclaimer</h5>
+        <p>
+          The content of this website has been created with the greatest
+          possible care. However, we cannot guarantee the accuracy,
+          completeness, or timeliness of the information provided.
         </p>
       </div>
     </ion-content>
