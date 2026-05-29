@@ -14,6 +14,8 @@ public class RoomMapper {
                 .description(room.getDescription())
                 .capacity(room.getCapacity())
                 .pricePerNight(room.getPricePerNight())
+                .imagePath(room.getImagePath())
+                .extras(room.getExtras())
                 .build();
     }
 
@@ -23,6 +25,8 @@ public class RoomMapper {
                 .description(roomDto.getDescription())
                 .capacity(roomDto.getCapacity())
                 .pricePerNight(roomDto.getPricePerNight())
+                .imagePath(roomDto.getImagePath())
+                .extras(roomDto.getExtras())
                 .build();
     }
 }

@@ -40,7 +40,7 @@ public class RoomController {
 
     @GetMapping("/{id}/availability")
     public ResponseEntity<?> getRoomAvailability(
-            @PathVariable("id") int roomId,
+            @PathVariable("id") Long roomId,
             @RequestParam("startDate") String startDate,
             @RequestParam("endDate") String endDate
     ) {
@@ -71,5 +71,12 @@ public class RoomController {
         }
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<RoomDto> getRoomById(@PathVariable("id") Long id) {
+        return roomService.findById(id)
+                .map(room -> new ResponseEntity<>(roomMapper.roomToRoomDto(room), HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }
