@@ -1,34 +1,42 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3 shadow">
-    <div class="container">
-      <a class="navbar-brand fw-bold fs-3" href="#">Chronos Hotel</a>
+  <ion-header class="ion-no-border">
+    <ion-toolbar color="dark" class="custom-toolbar">
+      <ion-title>
+        <router-link to="/" class="brand-link">
+          Boutique Hotel Technikum
+        </router-link>
+      </ion-title>
 
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div id="navbarNav" class="collapse navbar-collapse">
-        <ul class="navbar-nav ms-auto align-items-lg-center">
-          <li class="nav-item mx-2">
-            <a class="nav-link active" href="#">Home</a>
-          </li>
-
-          <li class="nav-item mx-2">
-            <a class="nav-link" href="/imprint">Imprint</a>
-          </li>
-
-          <li class="nav-item ms-lg-4 mt-3 mt-lg-0">
-            <router-link to="/rooms" class="btn btn-danger px-4">
-              Book Now
-            </router-link>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+      <ion-buttons slot="end">
+        <ion-button
+            router-link="/rooms"
+            fill="solid"
+            color="danger"
+        >
+          Book Now
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
 </template>
+
+<script setup>
+import { IonHeader, IonToolbar, IonTitle, IonButtons, IonButton } from '@ionic/vue';
+</script>
+
+<style scoped>
+
+.custom-toolbar {
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  --padding-start: 50px;
+  --padding-end: 50px;
+}
+
+.brand-link {
+  color: var(--ion-color-dark-contrast, #fff);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+</style>

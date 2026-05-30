@@ -28,6 +28,12 @@ const routes: Array<RouteRecordRaw> = [
     name: "Room Selection",
     component: SelectionPage,
   },
+
+  {
+    path: '/room/:id',
+    name: 'Room',
+    component: HomePage,
+  },
 ];
 
 const router = createRouter({
