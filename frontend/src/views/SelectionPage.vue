@@ -21,32 +21,34 @@
             </ion-text>
           </div>
 
-          <ion-row class="ion-justify-content-center ion-align-items-center ion-margin-vertical">
+          <ion-row class="ion-align-items-center ion-justify-content-center">
+
             <ion-col size="auto">
               <ion-button
-                  fill="outline"
-                  color="medium"
+                  fill="clear"
+                  color="dark"
                   :disabled="pageIndex === 0 || isLoading"
                   @click="changePage(pageIndex - 1)"
               >
-                Previous
+                <ion-icon slot="icon-only" :icon="chevronBack"></ion-icon>
               </ion-button>
             </ion-col>
-
-            <ion-col size="auto" class="ion-padding-horizontal">
-              <ion-text class="page-indicator">
-                Page {{ pageIndex + 1 }}
+            <ion-col size="auto" class="ion-text-center">
+              <ion-text color="dark">
+        <span style="font-weight: 500; font-size: 1.1rem;">
+          Page {{ pageIndex + 1 }}
+        </span>
               </ion-text>
             </ion-col>
 
             <ion-col size="auto">
               <ion-button
-                  fill="outline"
-                  color="medium"
+                  fill="clear"
+                  color="dark"
                   :disabled="rooms.length < pageSize || isLoading"
                   @click="changePage(pageIndex + 1)"
               >
-                Next
+                <ion-icon slot="icon-only" :icon="chevronForward"></ion-icon>
               </ion-button>
             </ion-col>
           </ion-row>
@@ -72,6 +74,8 @@ import {
 import NavbarComponent from "@/components/NavbarComponent.vue";
 import FooterComponent from "@/components/FooterComponent.vue";
 import RoomCard from "@/components/RoomCard.vue";
+import axios from "axios";
+import {chevronBack, chevronForward} from "ionicons/icons";
 
 const rooms = ref<any[]>([]);
 const isLoading = ref(false);
@@ -81,15 +85,14 @@ const pageSize = ref(5);
 const fetchRooms = async () => {
   isLoading.value = true;
   try {
-    const baseUrl = "http://localhost:8080/api/v1/rooms";
-    const response = await fetch(`${baseUrl}?pageIndex=${pageIndex.value}&pageSize=${pageSize.value}`);
+    const response = await axios.get("http://localhost:8080/api/v1/rooms", {
+      params: {
+        pageIndex: pageIndex.value,
+        pageSize: pageSize.value
+      }
+    });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-
+    const data = response.data;
     rooms.value = data.rooms.map((room: any, index: number) => ({
       id: room.id,
       title: room.title,
@@ -104,7 +107,7 @@ const fetchRooms = async () => {
       ]
     }));
   } catch (error) {
-    console.error("Error fetching rooms from backend:", error);
+    console.error("Error fetching rooms:", error);
     rooms.value = [];
   } finally {
     isLoading.value = false;
@@ -130,10 +133,5 @@ onMounted(() => {
 
   .main-content {
     flex: 1;
-  }
-
-  .page-indicator {
-    font-weight: 600;
-    font-size: 1.05rem;
   }
 </style>
