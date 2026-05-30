@@ -21,4 +21,4 @@ npm run dev
 ```
 Or run the Spring Boot build configuration from your IDE (IntelliJ, etc.).
 
-The database seeds from `data.sql` on each startup (state drops between sessions). View it via the H2 console at `http://localhost:8080/h2-console`.
+The database seeds from `data.sql` on each startup (state drops between sessions). View it via the H2 console at `http://localhost:8080/h2-console`
