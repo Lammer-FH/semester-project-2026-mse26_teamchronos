@@ -1,9 +1,9 @@
-INSERT INTO extra (id, name, icon) VALUES
+INSERT INTO extras (id, name, icon) VALUES
                                        (1, 'WiFi', 'wifi-icon'),
                                        (2, 'Air Conditioning', 'ac-icon'),
                                        (3, 'TV', 'tv-icon');
 
-INSERT INTO room (id, title, description, capacity, price_per_night, image_path) VALUES
+INSERT INTO rooms (id, title, description, capacity, price_per_night, image_path) VALUES
                                                                                         (1, 'Deluxe Room', 'Nice deluxe room', 2, 120.0, '/images/deluxe.jpg'),
                                                                                         (2, 'Family Room', 'Big family room', 4, 220.0, '/images/family.jpg'),
                                                                                         (3, 'Standard Room', 'Cozy standard room with basic amenities', 2, 85.0, '/images/standard.jpg'),

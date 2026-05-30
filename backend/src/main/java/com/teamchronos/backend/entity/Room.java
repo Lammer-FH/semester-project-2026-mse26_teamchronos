@@ -15,6 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
+@Table(name = "ROOMS")
 public class Room {
 
     @Id
@@ -39,5 +40,7 @@ public class Room {
             joinColumns = @JoinColumn(name = "room_id"),
             inverseJoinColumns = @JoinColumn(name = "extra_id")
     )
+
+    @Builder.Default
     private Set<Extra> extras = new HashSet<>();
 }

@@ -12,6 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
+@Table(name = "EXTRAS")
 public class Extra {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +22,7 @@ public class Extra {
 
     private String icon;
 
+    @Builder.Default
     @ManyToMany(mappedBy = "extras")
     private Set<Room> rooms = new HashSet<>();
 }
