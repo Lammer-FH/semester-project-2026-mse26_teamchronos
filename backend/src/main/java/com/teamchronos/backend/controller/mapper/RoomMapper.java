@@ -27,13 +27,4 @@ public class RoomMapper {
                         .collect(Collectors.toSet()))
                 .build();
     }
-
-    public Room roomDtoToRoom(RoomDto roomDto) {
-        return Room.builder()
-                .title(roomDto.getTitle())
-                .description(roomDto.getDescription())
-                .capacity(roomDto.getCapacity())
-                .pricePerNight(roomDto.getPricePerNight())
-                .build();
-    }
 }
