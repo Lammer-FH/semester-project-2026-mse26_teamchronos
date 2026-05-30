@@ -2,7 +2,7 @@
 
 Browse rooms, check real-time availability, add breakfast, and book with form validation.
 
-**Stack:** Ionic Vue 3 (Composition API, Bootstrap 5 + scoped CSS, Axios) · Spring Boot (Web, JPA) with a REST API under `/api/v1`.
+**Stack:** Ionic Vue 3 (Composition API, Bootstrap 5 + scoped CSS, Axios), Spring Boot with a REST API under `/api/v1`.
 
 ## Getting Started
 
