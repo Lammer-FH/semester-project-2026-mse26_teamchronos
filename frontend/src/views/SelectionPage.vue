@@ -1,17 +1,56 @@
 <template>
   <ion-page>
     <NavbarComponent />
-
     <ion-content>
-      <div class="d-flex flex-column min-vh-100">
-        <!-- CONTENT -->
-        <div class="flex-grow-1">
-          <div class="container my-5" id="rooms">
-            <RoomCard v-for="room in rooms" :key="room.title" v-bind="room" />
+      <div class="flex-wrapper">
+        <ion-grid fixed class="ion-padding main-content">
+          <div v-if="isLoading" class="ion-text-center ion-padding-vertical">
+            <ion-spinner name="crescent" color="primary"></ion-spinner>
+            <ion-text color="medium">
+              <p class="ion-no-margin ion-margin-top">Loading rooms...</p>
+            </ion-text>
           </div>
-        </div>
 
-        <!-- FOOTER -->
+          <template v-else-if="rooms.length > 0">
+            <RoomCard v-for="room in rooms" :key="room.title" v-bind="room" />
+          </template>
+
+          <div v-else class="ion-text-center ion-padding-vertical">
+            <ion-text color="medium">
+              <p>No rooms found.</p>
+            </ion-text>
+          </div>
+
+          <ion-row class="ion-justify-content-center ion-align-items-center ion-margin-vertical">
+            <ion-col size="auto">
+              <ion-button
+                  fill="outline"
+                  color="medium"
+                  :disabled="pageIndex === 0 || isLoading"
+                  @click="changePage(pageIndex - 1)"
+              >
+                Previous
+              </ion-button>
+            </ion-col>
+
+            <ion-col size="auto" class="ion-padding-horizontal">
+              <ion-text class="page-indicator">
+                Page {{ pageIndex + 1 }}
+              </ion-text>
+            </ion-col>
+
+            <ion-col size="auto">
+              <ion-button
+                  fill="outline"
+                  color="medium"
+                  :disabled="rooms.length < pageSize || isLoading"
+                  @click="changePage(pageIndex + 1)"
+              >
+                Next
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
         <FooterComponent />
       </div>
     </ion-content>
@@ -19,107 +58,82 @@
 </template>
 
 <script setup lang="ts">
-import { IonPage, IonContent } from "@ionic/vue";
+import { ref, onMounted } from "vue";
+import {
+  IonPage,
+  IonContent,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonButton,
+  IonSpinner,
+  IonText
+} from "@ionic/vue";
 import NavbarComponent from "@/components/NavbarComponent.vue";
 import FooterComponent from "@/components/FooterComponent.vue";
 import RoomCard from "@/components/RoomCard.vue";
 
-const rooms = [
-  {
-    subtitle: "Perfect for one guest",
-    title: 'Single Room "Comfort"',
-    description:
-      "Spacious and comfortable room with a large window. Private bathroom with shower and toilet.",
-    image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85",
-    reverse: false,
-    features: [
-      { icon: "bi bi-person", text: "1 Guest" },
-      { icon: "bi bi-house-door", text: "Double Bed" },
-      { icon: "bi bi-droplet", text: "Shower" },
-      { icon: "bi bi-tv", text: "TV" },
-      { icon: "bi bi-wifi", text: "Wi-Fi" },
-      { icon: "bi bi-safe", text: "Safe" },
-    ],
-  },
-  {
-    subtitle: "Comfortable and Spacious",
-    title: "Double Room with Balcony",
-    description:
-      "Modern double room with balcony, beautiful view, and a spacious bathroom.",
-    image: "https://images.unsplash.com/photo-1566665797739-1674de7a421a",
-    reverse: true,
-    features: [
-      { icon: "bi bi-people", text: "2 Guests" },
-      { icon: "bi bi-house-door", text: "King Size Bed" },
-      { icon: "bi bi-cup-hot", text: "Breakfast Included" },
-      { icon: "bi bi-tv", text: "Smart TV" },
-      { icon: "bi bi-wifi", text: "Wi-Fi" },
-      { icon: "bi bi-safe", text: "Safe" },
-    ],
-  },
-  {
-    subtitle: "Luxury and Relaxation",
-    title: "Deluxe Suite",
-    description:
-      "Exclusive suite featuring a living area, whirlpool, and stunning panoramic views.",
-    image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267",
-    reverse: false,
-    features: [
-      { icon: "bi bi-people", text: "4 Guests" },
-      { icon: "bi bi-stars", text: "Luxury Suite" },
-      { icon: "bi bi-droplet-half", text: "Whirlpool" },
-      { icon: "bi bi-tv", text: "Netflix TV" },
-      { icon: "bi bi-wifi", text: "High-Speed Wi-Fi" },
-      { icon: "bi bi-cup-straw", text: "Mini Bar" },
-    ],
-  },
-  {
-    subtitle: "Modern and Stylish",
-    title: "Business Room",
-    description:
-      "Perfect for business travelers, featuring a large workspace, high-speed internet, and a quiet atmosphere.",
-    image: "https://images.unsplash.com/photo-1590490360182-c33d57733427",
-    reverse: true,
-    features: [
-      { icon: "bi bi-person-workspace", text: "Business Ready" },
-      { icon: "bi bi-laptop", text: "Workspace" },
-      { icon: "bi bi-wifi", text: "High-Speed Wi-Fi" },
-      { icon: "bi bi-cup-hot", text: "Coffee Machine" },
-      { icon: "bi bi-tv", text: "Smart TV" },
-      { icon: "bi bi-safe", text: "Safe" },
-    ],
-  },
-  {
-    subtitle: "Family Friendly",
-    title: "Family Room",
-    description:
-      "Spacious family room with an additional sleeping area and plenty of space for children.",
-    image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85",
-    reverse: false,
-    features: [
-      { icon: "bi bi-people", text: "5 Guests" },
-      { icon: "bi bi-house-heart", text: "Family Bed" },
-      { icon: "bi bi-controller", text: "Play Area" },
-      { icon: "bi bi-tv", text: "Smart TV" },
-      { icon: "bi bi-wifi", text: "Wi-Fi" },
-      { icon: "bi bi-cup-straw", text: "Mini Bar" },
-    ],
-  },
-  {
-    subtitle: "Premium Experience",
-    title: "Penthouse Suite",
-    description:
-      "Luxury penthouse suite with a private terrace, exclusive service, and breathtaking views.",
-    image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb",
-    reverse: true,
-    features: [
-      { icon: "bi bi-gem", text: "Premium Suite" },
-      { icon: "bi bi-building", text: "Rooftop Terrace" },
-      { icon: "bi bi-cup-hot", text: "Room Service" },
-      { icon: "bi bi-tv", text: "Cinema TV" },
-      { icon: "bi bi-wifi", text: "Premium Wi-Fi" },
-      { icon: "bi bi-stars", text: "VIP Service" },
-    ],
-  },
-];
+const rooms = ref<any[]>([]);
+const isLoading = ref(false);
+const pageIndex = ref(0);
+const pageSize = ref(5);
+
+const fetchRooms = async () => {
+  isLoading.value = true;
+  try {
+    const baseUrl = "http://localhost:8080/api/v1/rooms";
+    const response = await fetch(`${baseUrl}?pageIndex=${pageIndex.value}&pageSize=${pageSize.value}`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    rooms.value = data.rooms.map((room: any, index: number) => ({
+      id: room.id,
+      title: room.title,
+      description: room.description,
+      reverse: index % 2 !== 0,
+      image: `http://localhost:8080${room.image}`,
+      features: [
+        { icon: "bi bi-people-fill", text: `${room.capacity} Guests` },
+        { icon: "bi bi-credit-card-fill", text: `${room.pricePerNight} € / Night` },
+        { icon: "bi bi-wifi", text: "Free Wi-Fi" },
+        { icon: "bi bi-tv", text: "Smart TV" }
+      ]
+    }));
+  } catch (error) {
+    console.error("Error fetching rooms from backend:", error);
+    rooms.value = [];
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+const changePage = (newPageIndex: number) => {
+  pageIndex.value = newPageIndex;
+  fetchRooms();
+};
+
+onMounted(() => {
+  fetchRooms();
+});
 </script>
+
+<style scoped>
+  .flex-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+  }
+
+  .main-content {
+    flex: 1;
+  }
+
+  .page-indicator {
+    font-weight: 600;
+    font-size: 1.05rem;
+  }
+</style>
