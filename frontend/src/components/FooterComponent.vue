@@ -1,35 +1,52 @@
 <template>
-  <footer class="bg-light border-top py-4">
-    <div class="container">
-      <div
-        class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3"
-      >
-        <div class="d-flex flex-wrap gap-4">
-          <a href="/imprint" class="link-dark text-decoration-none">
+  <footer class="custom-mobile-footer">
+    <ion-grid fixed>
+      <ion-row class="ion-align-items-center ion-justify-content-between view-row">
+
+        <ion-col size="12" size-sm="auto" class="ion-text-center ion-text-sm-start">
+          <router-link to="/imprint" class="footer-link">
             Legal Notice
-          </a>
+          </router-link>
+        </ion-col>
 
-          <a class="link-dark text-decoration-none"> Terms & Conditions </a>
+        <ion-col size="12" size-sm="auto" class="ion-text-center ion-text-sm-end">
+          <ion-text color="medium">
+            <span class="copyright-text">© 2026 Boutique Hotel Technikum</span>
+          </ion-text>
+        </ion-col>
 
-          <a class="link-dark text-decoration-none"> Privacy Policy </a>
-        </div>
-
-        <p class="mb-0 text-muted">© 2026 Chronos Hotel</p>
-      </div>
-    </div>
+      </ion-row>
+    </ion-grid>
   </footer>
 </template>
 
+<script setup lang="ts">
+import { IonGrid, IonRow, IonCol, IonText } from '@ionic/vue';
+</script>
+
 <style scoped>
-.social-icon {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: #000;
-  color: #fff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-}
+  .custom-mobile-footer {
+    background-color: var(--ion-color-light);
+    border-top: 1px solid var(--ion-color-light-shade, #e0e0e0);
+    padding: 24px 0;
+  }
+
+  .view-row {
+    row-gap: 12px;
+  }
+
+  .footer-link {
+    color: var(--ion-color-dark);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  .footer-link:focus, .footer-link:active {
+    opacity: 0.7;
+  }
+
+  .copyright-text {
+    font-size: 0.85rem;
+  }
 </style>

@@ -1,8 +1,11 @@
 package com.teamchronos.backend.controller.mapper;
 
+import com.teamchronos.backend.controller.dto.ExtraDto;
 import com.teamchronos.backend.controller.dto.RoomDto;
 import com.teamchronos.backend.entity.Room;
 import org.springframework.stereotype.Component;
+
+import java.util.stream.Collectors;
 
 @Component
 public class RoomMapper {
@@ -14,19 +17,14 @@ public class RoomMapper {
                 .description(room.getDescription())
                 .capacity(room.getCapacity())
                 .pricePerNight(room.getPricePerNight())
-                .imagePath(room.getImagePath())
-                .extras(room.getExtras())
-                .build();
-    }
-
-    public Room roomDtoToRoom(RoomDto roomDto) {
-        return Room.builder()
-                .title(roomDto.getTitle())
-                .description(roomDto.getDescription())
-                .capacity(roomDto.getCapacity())
-                .pricePerNight(roomDto.getPricePerNight())
-                .imagePath(roomDto.getImagePath())
-                .extras(roomDto.getExtras())
+                .image(room.getImagePath())
+                .extras(room.getExtras().stream()
+                        .map(extra -> ExtraDto.builder()
+                                .id(extra.getId())
+                                .name(extra.getName())
+                                .icon(extra.getIcon())
+                                .build())
+                        .collect(Collectors.toSet()))
                 .build();
     }
 }

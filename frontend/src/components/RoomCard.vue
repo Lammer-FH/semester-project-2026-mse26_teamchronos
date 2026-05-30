@@ -1,51 +1,72 @@
 <template>
-  <div
-    class="row align-items-center g-5 mb-5"
-    :class="{ 'flex-lg-row-reverse': reverse }"
-  >
-    <div class="col-12 col-lg-6">
-      <p class="text-uppercase text-secondary">{{ subtitle }}</p>
+  <ion-card class="ion-margin-bottom">
+    <ion-grid class="ion-no-padding">
+      <ion-row class="ion-align-items-center" :class="{ 'desktop-reverse': reverse }">
 
-      <h1 class="display-5 mb-4">{{ title }}</h1>
+        <ion-col size="12" size-lg="6">
+          <img
+              :src="image"
+              :alt="title"
+              style="width: 100%; display: block; object-fit: cover; max-height: 350px;"
+          />
+        </ion-col>
 
-      <p class="mb-4">{{ description }}</p>
+        <ion-col size="12" size-lg="6" class="ion-padding">
+          <ion-card-header class="ion-no-padding ion-margin-bottom">
+            <ion-card-title>
+              {{ title }}
+            </ion-card-title>
+          </ion-card-header>
 
-      <hr />
+          <ion-card-content class="ion-no-padding">
+            <p class="ion-margin-bottom">
+              {{ description }}
+            </p>
 
-      <div class="row mt-4 g-3">
-        <div
-          v-for="feature in features"
-          :key="feature.text"
-          class="col-6 col-md-4"
-        >
-          <i :class="feature.icon"></i>
-          {{ feature.text }}
-        </div>
-      </div>
+            <div class="ion-margin-vertical">
+              <ion-chip v-for="feature in features" :key="feature.text" :disabled="true" style="opacity: 1;">
+                <i :class="feature.icon" style="margin-right: 6px;"></i>
+                <ion-label>{{ feature.text }}</ion-label>
+              </ion-chip>
+            </div>
 
-      <div class="mt-4">
-        <button class="btn btn-danger me-3"> Select Room </button>
-      </div>
-    </div>
+            <div class="ion-margin-top">
+              <ion-button
+                  :router-link="'/rooms/' + id"
+                  color="danger"
+                  class="ion-no-margin">
+                Select Room
+              </ion-button>
+            </div>
+          </ion-card-content>
+        </ion-col>
 
-    <div class="col-12 col-lg-6">
-      <img
-        :src="image"
-        class="img-fluid rounded shadow"
-        :alt="title"
-      />
-    </div>
-  </div>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
 </template>
 
 <script setup lang="ts">
+import {
+  IonCard,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent,
+  IonChip,
+  IonLabel,
+  IonButton
+} from '@ionic/vue';
+
 type Feature = {
   icon: string
   text: string
 }
 
 defineProps<{
-  subtitle: string
+  id: number
   title: string
   description: string
   image: string
@@ -53,3 +74,11 @@ defineProps<{
   reverse?: boolean
 }>()
 </script>
+
+<style scoped>
+@media (min-width: 992px) {
+  .desktop-reverse {
+    flex-direction: row-reverse;
+  }
+}
+</style>

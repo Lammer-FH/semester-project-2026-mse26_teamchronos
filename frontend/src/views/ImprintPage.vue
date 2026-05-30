@@ -1,49 +1,74 @@
 <template>
-  <ion-page class="min-vh-100 d-flex flex-column">
+  <ion-page>
     <NavbarComponent />
 
-    <ion-content class="flex-grow-1">
-      <div class="container my-5">
-        <h1 class="display-4 fw-bold mb-5">Legal Notice</h1>
+    <ion-content>
+      <div class="flex-wrapper">
 
-        <h3 class="mb-4">Chronos Hotel</h3>
+        <ion-grid fixed class="ion-padding main-content">
 
-        <h5>Address</h5>
-        <p class="mb-4">
-          Höchstädtplatz 6<br />
-          1200 Vienna<br />
-          Austria
-        </p>
+          <h1 class="ion-padding-vertical">Legal Notice</h1>
 
-        <h5>Contact Information</h5>
-        <p class="mb-4">
-          Email: contact@chronos-hotel.at<br />
-          Phone: +43 1 234 567
-        </p>
+          <h3 class="ion-padding-vertical">Boutique Hotel Technikum</h3>
 
-        <h5>Responsible for Content</h5>
-        <p class="mb-4">
-          Chronos Hotel Management<br />
-          Höchstädtplatz 6<br />
-          1200 Vienna<br />
-          Austria
-        </p>
+          <ion-text color="medium">
+            <h5>Address</h5>
+          </ion-text>
+          <p>
+            Höchstädtplatz 6<br />
+            1200 Vienna<br />
+            Austria
+          </p>
 
-        <h5>Disclaimer</h5>
-        <p>
-          The content of this website has been created with the greatest
-          possible care. However, we cannot guarantee the accuracy,
-          completeness, or timeliness of the information provided.
-        </p>
+          <ion-text color="medium">
+            <h5>Contact Information</h5>
+          </ion-text>
+          <p>
+            Email: contact@hotel-technikum.at<br />
+            Phone: +43 1 234 567
+          </p>
+
+          <ion-text color="medium">
+            <h5>Responsible for Content</h5>
+          </ion-text>
+          <p>
+            Boutique Hotel Technikum Management<br />
+            Höchstädtplatz 6<br />
+            1200 Vienna<br />
+            Austria
+          </p>
+
+          <ion-text color="medium">
+            <h5>Disclaimer</h5>
+          </ion-text>
+          <p>
+            The content of this website has been created with the greatest
+            possible care.<br>However, we cannot guarantee the accuracy,
+            completeness, or timeliness of the information provided.
+          </p>
+
+        </ion-grid>
+
+        <FooterComponent />
       </div>
     </ion-content>
-
-    <FooterComponent />
   </ion-page>
 </template>
 
 <script setup lang="ts">
-import { IonPage, IonContent } from "@ionic/vue";
+import { IonPage, IonContent, IonGrid, IonText } from "@ionic/vue";
 import NavbarComponent from "@/components/NavbarComponent.vue";
 import FooterComponent from "@/components/FooterComponent.vue";
 </script>
+
+<style scoped>
+.flex-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.main-content {
+  flex: 1;
+}
+</style>

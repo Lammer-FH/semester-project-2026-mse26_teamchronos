@@ -3,18 +3,19 @@ package com.teamchronos.backend.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import java.util.List;
+import lombok.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "rooms")
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class Room {
 
     @Id
@@ -33,11 +34,13 @@ public class Room {
 
     private String imagePath;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
-            name = "rooms_extras",
-            joinColumns = @JoinColumn(name = "roomId"),
-            inverseJoinColumns = @JoinColumn(name = "extraId")
+            name = "room_extras",
+            joinColumns = @JoinColumn(name = "room_id"),
+            inverseJoinColumns = @JoinColumn(name = "extra_id")
     )
-    private List<Extra> extras;
+
+    @Builder.Default
+    private Set<Extra> extras = new HashSet<>();
 }
