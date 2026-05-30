@@ -1,6 +1,24 @@
-### start frontend test with: npm run dev
+# Hotel Booking App
 
-### start backend test with: ./gradlew bootRun 
-or a build config in intellij/whatever ide
+Browse rooms, check real-time availability, add breakfast, and book with form validation.
 
-db console: http://localhost:8080/h2-console
+**Stack:** Ionic Vue 3 (Composition API, Bootstrap 5 + scoped CSS, Axios) · Spring Boot (Web, JPA) with a REST API under `/api/v1`.
+
+## Getting Started
+
+**Frontend**
+
+run from ../frontend
+
+```bash
+npm install
+npm run dev
+```
+
+**Backend**
+```bash
+./gradlew bootRun
+```
+Or run the Spring Boot build configuration from your IDE (IntelliJ, etc.).
+
+The database seeds from `data.sql` on each startup (state drops between sessions). View it via the H2 console at `http://localhost:8080/h2-console`.
