@@ -1,0 +1,14 @@
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/
+*.iml
+
+# Env
+.env
+.env.local
+*.local
+
+# Logs
+*.log
+.fake
