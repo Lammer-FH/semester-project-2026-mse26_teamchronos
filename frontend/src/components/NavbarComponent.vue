@@ -19,15 +19,13 @@
           </li>
 
           <li class="nav-item mx-2">
-            <a class="nav-link" href="/about">Über uns</a>
-          </li>
-
-          <li class="nav-item mx-2">
-            <a class="nav-link" href="/imprint">Kontakt</a>
+            <a class="nav-link" href="/imprint">Imprint</a>
           </li>
 
           <li class="nav-item ms-lg-4 mt-3 mt-lg-0">
-            <button class="btn btn-danger px-4">Jetzt buchen</button>
+            <router-link to="/rooms" class="btn btn-danger px-4">
+              Book Now
+            </router-link>
           </li>
         </ul>
       </div>
