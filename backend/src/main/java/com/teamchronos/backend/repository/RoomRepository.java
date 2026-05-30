@@ -10,11 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Long>, PagingAndSortingRepository<Room, Long> {
 
-    /**
-     * Find page of room entries ordered by price per night.
-     *
-     * @param pageable for pagination
-     * @return ordered page of room entries
-     */
+
     //Page<Room> findAllByPricePerNight(Pageable pageable);
 }
