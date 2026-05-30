@@ -18,7 +18,7 @@
             <h2 class="fw-bold text-uppercase mb-3 text-white tracking-wide">Chronos Hotel</h2>
 
             <p class="text-secondary mb-4 fs-5">
-              Welcome to <strong>Chronos Hotel</strong>, a modern hotel located in the heart of Vienna. We combine elegant design, comfort, and exceptional hospitality to create a memorable experience for every guest.
+              Willkommen im <strong>Chronos Hotel</strong>, Ihrem modernen Hotel direkt im Herzen von Wien. Wir verbinden elegantes Design, hohen Komfort und herzliche Gastfreundschaft, um jedem Gast ein unvergessliches Erlebnis zu bieten.
             </p>
 
             <button @click="scrollToRooms" class="btn btn-primary btn-lg px-5 py-2 fw-bold mb-5 shadow-sm">
@@ -34,7 +34,7 @@
             <h5 class="fw-bold text-uppercase mb-3 text-white tracking-wide">Über Uns</h5>
 
             <p class="text-secondary fs-5">
-              At <strong>Chronos Hotel</strong>, our mission is to provide guests with a relaxing and unforgettable stay, whether they are visiting Vienna for business, leisure, or a weekend getaway. Our rooms have been carefully designed to combine <em>modern elegance</em> with practical comfort. Bright interiors, high-quality furnishings, and a welcoming atmosphere ensure that guests feel at home from the moment they arrive.
+              Im <strong>Chronos Hotel</strong> möchten wir unseren Gästen einen rundum entspannten und unvergesslichen Aufenthalt bieten – ganz gleich, ob Sie geschäftlich, privat oder für einen Kurztrip in Wien sind. Unsere Zimmer verbinden <em>moderne Eleganz</em> mit wohnlichem Komfort. Durch lichtdurchflutete Räume, eine hochwertige Ausstattung und eine herzliche Atmosphäre sorgen wir dafür, dass Sie sich bei uns vom ersten Moment an wie zu Hause fühlen.
             </p>
           </div>
         </div>
