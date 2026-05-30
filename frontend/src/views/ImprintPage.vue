@@ -24,7 +24,7 @@
             <h5>Contact Information</h5>
           </ion-text>
           <p>
-            Email: contact@boutique-hotel-technikum.at<br />
+            Email: contact@hotel-technikum.at<br />
             Phone: +43 1 234 567
           </p>
 

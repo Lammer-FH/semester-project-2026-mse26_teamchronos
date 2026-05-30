@@ -93,19 +93,32 @@ const fetchRooms = async () => {
     });
 
     const data = response.data;
-    rooms.value = data.rooms.map((room: any, index: number) => ({
-      id: room.id,
-      title: room.title,
-      description: room.description,
-      reverse: index % 2 !== 0,
-      image: `http://localhost:8080${room.image}`,
-      features: [
-        { icon: "bi bi-people-fill", text: `${room.capacity} Guests` },
-        { icon: "bi bi-credit-card-fill", text: `${room.pricePerNight} € / Night` },
-        { icon: "bi bi-wifi", text: "Free Wi-Fi" },
-        { icon: "bi bi-tv", text: "Smart TV" }
-      ]
-    }));
+    rooms.value = data.rooms.map((room: any, index: number) => {
+      const coreFeatures = [
+        {
+          icon: room.capacity === 1 ? "bi bi-person-fill" : "bi bi-people-fill",
+          text: `${room.capacity} ${room.capacity === 1 ? 'Guest' : 'Guests'}`
+        },
+        {
+          icon: "bi bi-credit-card-fill",
+          text: `${room.pricePerNight} € / Night`
+        }
+      ];
+
+      const dynamicFeatures = room.extras ? room.extras.map((extra: any) => ({
+        icon: `bi ${extra.icon}`,
+        text: extra.name
+      })) : [];
+
+      return {
+        id: room.id,
+        title: room.title,
+        description: room.description,
+        reverse: index % 2 !== 0,
+        image: `http://localhost:8080${room.image}`,
+        features: [...coreFeatures, ...dynamicFeatures]
+      };
+    });
   } catch (error) {
     console.error("Error fetching rooms:", error);
     rooms.value = [];

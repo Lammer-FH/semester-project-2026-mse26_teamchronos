@@ -3,7 +3,7 @@
     <ion-toolbar color="dark" class="custom-toolbar">
       <ion-title>
         <router-link to="/" class="brand-link">
-          Boutique Hotel Technikum
+          B H T
         </router-link>
       </ion-title>
 

@@ -37,53 +37,21 @@
             <ion-text color="dark" class="ion-text-center">
               <h2 class="ion-padding-vertical"><strong>ABOUT US</strong></h2>
             </ion-text>
-            <ion-text color="dark">
+            <ion-text class="ion-text-center" color="dark">
               <p>
-                At <strong>Boutique Hotel Technikum</strong>, our mission is to provide guests
-                with a relaxing and unforgettable stay, whether they are visiting
-                Vienna for business, leisure, or a weekend getaway.
-              </p>
-
-              <p>
-                Our rooms have been carefully designed to combine
-                <em>modern elegance</em> with practical comfort. Bright interiors,
-                high-quality furnishings, and a welcoming atmosphere ensure that
-                guests feel at home from the moment they arrive.
-              </p>
-
-              <p>
-                From cozy single rooms to luxurious suites,
-                <strong>Boutique Hotel Technikum</strong> offers accommodation options suitable
-                for every type of traveler.
-              </p>
-
-              <p>
-                We place great importance on
-                <strong>excellent service, cleanliness, and hospitality</strong>.
-                Our dedicated team is always available to assist guests and ensure
-                that every stay exceeds expectations.
-              </p>
-
-              <p>
-                Complimentary high-speed Wi-Fi, modern entertainment systems, and
-                comfortable workspaces make our hotel ideal for both tourists and
-                business travelers.
-              </p>
-
-              <p>
-                Thanks to our central location, many of Vienna’s famous attractions,
-                restaurants, and shopping areas are within easy reach. At the same
-                time, the hotel offers a
-                <em>peaceful and relaxing environment</em>
-                where guests can unwind and recharge.
+                At the <strong>Boutique Hotel Technikum</strong>, we want to offer our guests a completely relaxing and
+                unforgettable stay – whether you're in Vienna for business, pleasure, or a short break.
+                Our rooms combine modern elegance with homely comfort.
+                With light-filled rooms, high-quality furnishings, and a welcoming atmosphere,
+                we ensure you feel right at home from the moment you arrive.
               </p>
             </ion-text>
           </ion-col>
         </ion-row>
-        <ion-row class="ion-justify-content-center ion-margin-top">
+        <ion-row>
           <ion-col>
             <ion-text color="dark" class="ion-text-center">
-              <p class="ion-margin-top ion-padding-top">
+              <p>
                 <strong><em>Boutique Hotel Technikum stands for quality, comfort, and modern hospitality.</em></strong>
               </p>
             </ion-text>

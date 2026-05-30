@@ -6,7 +6,7 @@
       <div v-if="room">
         <div class="container-fluid p-0">
           <img
-              :src="room.imagePath || room.image"
+              :src="'http://localhost:8080' + room.image"
               class="img-fluid w-100 room-hero-img"
               :alt="room.title"
           />
@@ -15,19 +15,19 @@
         <div class="container mt-5 px-4 mb-5">
           <div class="row justify-content-center">
             <div class="col-12 col-md-10 col-lg-8">
-              <p class="text-uppercase text-center text-secondary fw-bold tracking-wide mb-2">Zimmerdetails</p>
+              <p class="text-uppercase text-center text-secondary fw-bold tracking-wide mb-2">Room Details</p>
               <h4 class="fw-bold text-white text-center text-uppercase tracking-wide mb-4">
                 {{ room.title }}
               </h4>
 
               <div class="d-flex justify-content-center gap-4 text-light mb-3">
                 <span class="d-flex align-items-center gap-2">
-                  <i class="bi bi-people fs-5"></i>
-                  Bis zu {{ room.capacity }} Personen
+                  <i :class="room.capacity === 1 ? 'bi bi-person fs-5' : 'bi bi-people fs-5'"></i>
+                  Up to {{ room.capacity }} {{ room.capacity === 1 ? 'Guest' : 'Guests' }}
                 </span>
                 <span class="d-flex align-items-center gap-2">
                   <i class="bi bi-tag fs-5"></i>
-                  Ab €{{ room.pricePerNight }} / Nacht
+                  From {{ room.pricePerNight }} € / Night
                 </span>
               </div>
 
@@ -42,11 +42,11 @@
               </div>
 
               <div class="card card-dark-bg border-0 shadow-sm p-4 mb-4">
-                <h4 class="card-title text-center text-white mb-4">Verfügbarkeit prüfen</h4>
+                <h4 class="card-title text-center text-white mb-4">Check Availability</h4>
 
                 <div class="row g-3 mb-4">
                   <div class="col-6">
-                    <label class="form-label text-secondary small fw-bold text-uppercase">Check-in</label>
+                    <label class="form-label text-secondary small fw-bold text-uppercase">Check-In</label>
                     <input
                         type="date"
                         v-model="startDate"
@@ -55,7 +55,7 @@
                     />
                   </div>
                   <div class="col-6">
-                    <label class="form-label text-secondary small fw-bold text-uppercase">Check-out</label>
+                    <label class="form-label text-secondary small fw-bold text-uppercase">Check-Out</label>
                     <input
                         type="date"
                         v-model="endDate"
@@ -72,33 +72,33 @@
 
                 <button
                     v-if="!isAvailable"
-                    class="btn btn-danger btn-lg w-100 fw-bold shadow-sm"
+                    class="btn btn-danger"
                     @click="checkAvailability"
                     :disabled="isLoading"
                 >
                   <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                  {{ isLoading ? 'Prüfe...' : 'Buchen Sie jetzt!' }}
+                  {{ isLoading ? 'Checking...' : 'Check Now' }}
                 </button>
               </div>
 
               <div v-if="isAvailable" class="card card-dark-bg border-0 shadow-sm p-4 mt-4">
-                <h5 class="fw-bold text-white text-center text-uppercase tracking-wide mb-4">Buchung</h5>
+                <h5 class="fw-bold text-white text-center text-uppercase tracking-wide mb-4">Booking</h5>
 
                 <div class="mb-3">
-                  <input type="text" v-model="form.firstName" placeholder="Vorname" class="form-control form-control-lg border-0 dark-input mb-3" />
-                  <input type="text" v-model="form.lastName" placeholder="Nachname" class="form-control form-control-lg border-0 dark-input mb-3" />
+                  <input type="text" v-model="form.firstName" placeholder="First name" class="form-control form-control-lg border-0 dark-input mb-3" />
+                  <input type="text" v-model="form.lastName" placeholder="Last name" class="form-control form-control-lg border-0 dark-input mb-3" />
                   <input type="email" v-model="form.email" placeholder="E-Mail" class="form-control form-control-lg border-0 dark-input mb-3" />
-                  <input type="email" v-model="form.confirmEmail" placeholder="E-Mail bestätigen" class="form-control form-control-lg border-0 dark-input mb-4" />
+                  <input type="email" v-model="form.confirmEmail" placeholder="Confirm E-Mail" class="form-control form-control-lg border-0 dark-input mb-4" />
 
                   <div class="form-check text-secondary mb-4 d-flex align-items-center gap-2">
                     <input class="form-check-input dark-checkbox fs-5 mt-0" type="checkbox" v-model="form.breakfast" id="breakfastCheck">
                     <label class="form-check-label pt-1" for="breakfastCheck">
-                      Frühstück
+                      Breakfast
                     </label>
                   </div>
 
                   <button class="btn btn-primary btn-lg w-100 fw-bold shadow-sm" @click="submitBooking">
-                    BUCHUNG BESTÄTIGEN
+                    Confirm Booking
                   </button>
                 </div>
               </div>
@@ -109,7 +109,7 @@
 
       <div v-else class="d-flex justify-content-center align-items-center min-vh-100">
         <div class="spinner-border text-danger" role="status">
-          <span class="visually-hidden">Lade Zimmer...</span>
+          <span class="visually-hidden">Loading rooms...</span>
         </div>
       </div>
 
@@ -138,8 +138,7 @@ interface RoomData {
   description: string;
   capacity: number;
   pricePerNight: number;
-  imagePath?: string;
-  image?: string;
+  image: string;
   extras: Extra[];
 }
 
@@ -178,7 +177,7 @@ onMounted(async () => {
 
 const checkAvailability = async () => {
   if (!startDate.value || !endDate.value) {
-    statusMessage.value = "Bitte wählen Sie beide Daten aus.";
+    statusMessage.value = "Please select dates..";
     isAvailable.value = false;
     return;
   }
@@ -196,19 +195,19 @@ const checkAvailability = async () => {
 
     if (response.status === 200) {
       isAvailable.value = true;
-      statusMessage.value = "Zimmer ist verfügbar!";
+      statusMessage.value = "Room is available!";
     }
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       if (error.response.status === 409) {
         isAvailable.value = false;
-        statusMessage.value = "Zimmer für diesen Zeitraum belegt.";
+        statusMessage.value = "Room is unavailable.";
       } else {
         isAvailable.value = false;
-        statusMessage.value = "Ungültige Datenfolge.";
+        statusMessage.value = "Invalid data sequence.";
       }
     } else {
-      statusMessage.value = "Server-Verbindungsfehler.";
+      statusMessage.value = "Server connection error.";
       isAvailable.value = false;
     }
   } finally {
@@ -218,7 +217,7 @@ const checkAvailability = async () => {
 
 const submitBooking = () => {
   if (form.email !== form.confirmEmail) {
-    alert("Die E-Mail-Adressen stimmen nicht überein.");
+    alert("The email addresses do not match..");
     return;
   }
 
