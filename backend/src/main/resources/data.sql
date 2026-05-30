@@ -8,11 +8,15 @@ INSERT INTO rooms (title, description, capacity, price_per_night, image_path) VA
                                                                                         ('Presidential Suite', 'Premium suite with top-class facilities', 5, 500.0, '/images/presidential.jpg');
 
 INSERT INTO extras (name, icon) VALUES
-                                        ('WiFi', 'wifi-icon'),
-                                        ('Air Conditioning', 'ac-icon'),
-                                        ('TV', 'tv-icon');
+                                        ('WiFi', 'bi-wifi'),
+                                        ('Minibar', 'bi-cup-straw'),
+                                        ('TV', 'bi-tv');
 
 INSERT INTO room_extras (room_id, extra_id) VALUES
+                                                (1, 1),
+                                                (1, 3),
+                                                (2, 1),
+                                                (2, 2),
                                                 (3, 1),
                                                 (4, 1),
                                                 (4, 2),
@@ -20,6 +24,7 @@ INSERT INTO room_extras (room_id, extra_id) VALUES
                                                 (5, 1),
                                                 (6, 1),
                                                 (6, 2),
+                                                (6, 3),
                                                 (7, 1),
                                                 (7, 2),
                                                 (7, 3);
