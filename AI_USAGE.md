@@ -41,7 +41,23 @@
 * **Why:** Hamburger menu was not needed. The design was flattened into a clean `<ion-toolbar>`.
 
 
+## feature/US1-hotel-website
 
+### ChatGPT 5.5
+
+Used for frontend guidance, component structuring, content refinement, and Vue/Ionic troubleshooting.
+
+| Documented Prompt | Implementation Summary |
+| --- | --- |
+| "How should I structure the static pages for the hotel website?" | Suggested separating the application into dedicated pages such as Home, About, Rooms, and Legal Notice. |
+| "Should I use BootstrapVue or standard Bootstrap with Vue 3?" | Recommended standard Bootstrap integration for compatibility with Vue 3 and Ionic. |
+| "How can I make my room layout reusable in Vue?" | Suggested extracting repeated room sections into a reusable `RoomCard` component. |
+| "Should the navigation bar and footer be separate components?" | Recommended creating shared components to avoid duplication across pages. |
+| "How can I navigate to another page when clicking a button?" | Explained Vue Router navigation using `router-link` and route definitions. |
+| "What information should be included on an About Us page for a hotel website?" | Provided guidance and example content for presenting the hotel and its services. |
+| "How can I improve the structure and readability of the hotel description?" | Suggested text formatting, content organization, and improvements for readability. |
+| "How can I make the layout responsive for mobile and desktop devices?" | Recommended Bootstrap grid utilities and responsive layout patterns. |
+| "What is still missing to satisfy the user story requirements?" | Reviewed the implementation against the assignment criteria and identified any remaining tasks. |
 
 ## feature/US3-availability
 ### Gemini 3.5 Flash: 
