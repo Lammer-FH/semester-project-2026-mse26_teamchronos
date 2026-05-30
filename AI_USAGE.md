@@ -1,6 +1,10 @@
-### Linda Gan
----
 ### 1. Feature Development
+
+#### Generate Dummy Data for H2DB
+* **Tool:** ChatGPT
+* **Task/Prompt:** Generate dummy data for hotel booking website based on this API specification and DB design [attachments].
+* **Decision:** **Modified.**
+* **Why:** Because dummy data is needed to have a pre-filled db to test with.
 
 #### Repository & Query Definition
 * **Tool:** Gemini AI
@@ -35,4 +39,3 @@
 * **Task/Prompt:** Adapt a classic Bootstrap navigation component (`NavbarComponent.vue`) to Ionic, keeping links readable on narrow screens while removing the typical hamburger menu pattern.
 * **Decision:** **Modified.**
 * **Why:** Hamburger menu was not needed. The design was flattened into a clean `<ion-toolbar>`.
----
