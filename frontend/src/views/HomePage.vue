@@ -3,54 +3,73 @@
     <NavbarComponent />
 
     <ion-content>
-      <div class="d-flex flex-column min-vh-100">
-        <div class="flex-grow-1">
-          <div class="container my-5" id="rooms">
+      <div class="container-fluid p-0">
+        <img
+            src="https://images.unsplash.com/photo-1566073771259-6a8506099945"
+            class="img-fluid w-100 hero-img"
+            alt="Chronos Hotel"
+            fetchpriority="high"
+        />
+      </div>
 
+      <section class="container mt-5 px-4">
+        <div class="row justify-content-center">
+          <div class="col-12 col-md-10 col-lg-8 text-center">
+            <h2 class="fw-bold text-uppercase mb-3 text-white tracking-wide">Chronos Hotel</h2>
+
+            <p class="text-secondary mb-4 fs-5">
+              Welcome to <strong>Chronos Hotel</strong>, a modern hotel located in the heart of Vienna. We combine elegant design, comfort, and exceptional hospitality to create a memorable experience for every guest.
+            </p>
+
+            <button @click="scrollToRooms" class="btn btn-primary btn-lg px-5 py-2 fw-bold mb-5 shadow-sm">
+              JETZT BUCHEN
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="container mb-5 px-4">
+        <div class="row justify-content-center">
+          <div class="col-12 col-md-10 col-lg-8 text-center">
+            <h5 class="fw-bold text-uppercase mb-3 text-white tracking-wide">Über Uns</h5>
+
+            <p class="text-secondary fs-5">
+              At <strong>Chronos Hotel</strong>, our mission is to provide guests with a relaxing and unforgettable stay, whether they are visiting Vienna for business, leisure, or a weekend getaway. Our rooms have been carefully designed to combine <em>modern elegance</em> with practical comfort. Bright interiors, high-quality furnishings, and a welcoming atmosphere ensure that guests feel at home from the moment they arrive.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="container mt-5 pt-4" id="rooms">
+        <h5 class="text-center fw-bold text-uppercase mb-4 text-white tracking-wide">Unsere Zimmer</h5>
+
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-10">
             <div
                 v-for="room in rooms"
                 :key="room.id"
-                class="card mb-5 shadow-sm border-0 overflow-hidden"
+                class="card mb-5 border-0 shadow custom-room-card"
                 @click="goToRoom(room.id)"
-                style="cursor: pointer; transition: transform 0.2s;"
-                onmouseover="this.style.transform='scale(1.02)'"
-                onmouseout="this.style.transform='scale(1)'"
             >
-              <div class="row g-0">
-                <div :class="['col-md-6', room.reverse ? 'order-md-last' : '']">
-                  <img :src="room.image" :alt="room.title" class="img-fluid h-100" style="object-fit: cover; min-height: 300px;" />
+              <img :src="room.image" class="card-img-top room-img" :alt="room.title" />
+
+              <div class="card-body card-dark-bg text-white d-flex justify-content-between align-items-center p-4">
+                <div>
+                  <h5 class="fw-bold mb-1">{{ room.title }}</h5>
+                  <small class="text-secondary">{{ room.subtitle }}</small>
                 </div>
 
-                <div class="col-md-6 d-flex align-items-center bg-dark text-white">
-                  <div class="card-body p-5">
-                    <h6 class="text-primary text-uppercase fw-bold mb-2" style="letter-spacing: 0.1em;">{{ room.subtitle }}</h6>
-
-                    <h2 class="card-title fw-bold mb-3">{{ room.title }}</h2>
-
-                    <p class="card-text text-light mb-4">{{ room.description }}</p>
-
-                    <div class="row g-2 mb-4">
-                      <div class="col-6" v-for="(feature, index) in room.features" :key="index">
-                        <div class="d-flex align-items-center text-white-50 small">
-                          <i :class="feature.icon + ' me-2 text-primary fs-5'"></i>
-                          {{ feature.text }}
-                        </div>
-                      </div>
-                    </div>
-
-                    <button class="btn btn-primary btn-lg px-4">
-                      DETAILS & BUCHEN
-                    </button>
-                  </div>
+                <div class="d-flex gap-3 text-secondary">
+                  <i class="bi bi-wifi fs-4"></i>
+                  <i class="bi bi-tv fs-4"></i>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
+      </section>
 
-        <FooterComponent />
-      </div>
+      <FooterComponent />
     </ion-content>
   </ion-page>
 </template>
@@ -63,8 +82,14 @@ import FooterComponent from "@/components/FooterComponent.vue";
 
 const router = useRouter();
 
+const scrollToRooms = () => {
+  const roomsSection = document.getElementById("rooms");
+  if (roomsSection) {
+    roomsSection.scrollIntoView({ behavior: "smooth" });
+  }
+};
+
 const goToRoom = (id: number) => {
-  // This physically moves the user to your new room.vue page!
   router.push(`/room/${id}`);
 };
 
@@ -73,97 +98,74 @@ const rooms = [
     id: 1,
     subtitle: "Perfekt für eine Person",
     title: 'Einzelzimmer "Comfort"',
-    description: "Geräumiges, schönes Zimmer mit großem Fenster. Badezimmer mit Dusche und WC.",
     image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85",
-    reverse: false,
-    features: [
-      { icon: "bi bi-person", text: "1 Person" },
-      { icon: "bi bi-house-door", text: "Doppelbett" },
-      { icon: "bi bi-droplet", text: "Dusche" },
-      { icon: "bi bi-tv", text: "TV" },
-      { icon: "bi bi-wifi", text: "WLAN" },
-      { icon: "bi bi-safe", text: "Safe" },
-    ]
   },
   {
     id: 2,
     subtitle: "Komfortabel und geräumig",
     title: "Doppelzimmer mit Balkon",
-    description: "Modernes Doppelzimmer mit Balkon, wunderschöner Aussicht und großem Badezimmer.",
     image: "https://images.unsplash.com/photo-1566665797739-1674de7a421a",
-    reverse: true,
-    features: [
-      { icon: "bi bi-people", text: "2 Personen" },
-      { icon: "bi bi-house-door", text: "Kingsize Bett" },
-      { icon: "bi bi-cup-hot", text: "Frühstück" },
-      { icon: "bi bi-tv", text: "Smart TV" },
-      { icon: "bi bi-wifi", text: "WLAN" },
-      { icon: "bi bi-safe", text: "Safe" },
-    ]
   },
   {
     id: 3,
     subtitle: "Luxus und Entspannung",
     title: "Deluxe Suite",
-    description: "Exklusive Suite mit Wohnbereich, Whirlpool und traumhaftem Panoramablick.",
     image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267",
-    reverse: false,
-    features: [
-      { icon: "bi bi-people", text: "4 Personen" },
-      { icon: "bi bi-stars", text: "Luxus Suite" },
-      { icon: "bi bi-droplet-half", text: "Whirlpool" },
-      { icon: "bi bi-tv", text: "Netflix TV" },
-      { icon: "bi bi-wifi", text: "Highspeed WLAN" },
-      { icon: "bi bi-cup-straw", text: "Minibar" },
-    ]
   },
   {
     id: 4,
     subtitle: "Modern und stilvoll",
     title: "Business Zimmer",
-    description: "Perfekt für Geschäftsreisen mit großem Schreibtisch, schnellem WLAN und ruhiger Atmosphäre.",
     image: "https://images.unsplash.com/photo-1590490360182-c33d57733427",
-    reverse: true,
-    features: [
-      { icon: "bi bi-person-workspace", text: "Business" },
-      { icon: "bi bi-laptop", text: "Arbeitsplatz" },
-      { icon: "bi bi-wifi", text: "Highspeed WLAN" },
-      { icon: "bi bi-cup-hot", text: "Kaffeemaschine" },
-      { icon: "bi bi-tv", text: "Smart TV" },
-      { icon: "bi bi-safe", text: "Safe" },
-    ]
   },
   {
     id: 5,
     subtitle: "Familienfreundlich",
     title: "Familienzimmer",
-    description: "Großes Zimmer für Familien mit zusätzlichem Schlafbereich und viel Platz für Kinder.",
     image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85",
-    reverse: false,
-    features: [
-      { icon: "bi bi-people", text: "5 Personen" },
-      { icon: "bi bi-house-heart", text: "Familienbett" },
-      { icon: "bi bi-controller", text: "Spielecke" },
-      { icon: "bi bi-tv", text: "Smart TV" },
-      { icon: "bi bi-wifi", text: "WLAN" },
-      { icon: "bi bi-cup-straw", text: "Minibar" },
-    ]
   },
   {
     id: 6,
     subtitle: "Premium Erlebnis",
     title: "Penthouse Suite",
-    description: "Luxus Penthouse mit privater Terrasse, exklusivem Service und atemberaubender Aussicht.",
     image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb",
-    reverse: true,
-    features: [
-      { icon: "bi bi-gem", text: "Premium Suite" },
-      { icon: "bi bi-building", text: "Dachterrasse" },
-      { icon: "bi bi-cup-hot", text: "Room Service" },
-      { icon: "bi bi-tv", text: "Cinema TV" },
-      { icon: "bi bi-wifi", text: "Premium WLAN" },
-      { icon: "bi bi-stars", text: "VIP Service" },
-    ]
   }
 ];
 </script>
+
+<style scoped>
+ion-content {
+  --background: #121212;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.hero-img {
+  object-fit: cover;
+  max-height: 50vh;
+}
+
+.room-img {
+  object-fit: cover;
+  height: 350px;
+}
+
+.tracking-wide {
+  letter-spacing: 0.1em;
+}
+
+.custom-room-card {
+  background-color: transparent;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.custom-room-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-dark-bg {
+  background-color: #1e1e1e !important;
+  border-bottom-left-radius: 0.375rem;
+  border-bottom-right-radius: 0.375rem;
+}
+</style>
