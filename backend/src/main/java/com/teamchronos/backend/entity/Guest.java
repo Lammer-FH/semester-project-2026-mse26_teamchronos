@@ -30,6 +30,4 @@ public class Guest {
     @Email
     @Column(unique = true)
     private String email;
-
-    private String phoneNumber;
 }
