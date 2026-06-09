@@ -37,4 +37,7 @@ public class Booking {
     private LocalDate checkOutDate;
 
     private Float totalPrice;
+
+    @Column(nullable = false)
+    private boolean breakfastIncluded;
 }

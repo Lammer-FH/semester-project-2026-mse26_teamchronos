@@ -85,10 +85,21 @@
                 <h5 class="fw-bold text-white text-center text-uppercase tracking-wide mb-4">Booking</h5>
 
                 <div class="mb-3">
-                  <input type="text" v-model="form.firstName" placeholder="First name" class="form-control form-control-lg border-0 dark-input mb-3" />
-                  <input type="text" v-model="form.lastName" placeholder="Last name" class="form-control form-control-lg border-0 dark-input mb-3" />
-                  <input type="email" v-model="form.email" placeholder="E-Mail" class="form-control form-control-lg border-0 dark-input mb-3" />
-                  <input type="email" v-model="form.confirmEmail" placeholder="Confirm E-Mail" class="form-control form-control-lg border-0 dark-input mb-4" />
+                  <input type="text" v-model="form.firstName" placeholder="First name"
+                         :class="['form-control form-control-lg border-0 dark-input mb-1', errors.firstName && 'is-invalid']" />
+                  <div v-if="errors.firstName" class="text-danger small mb-2">{{ errors.firstName }}</div>
+
+                  <input type="text" v-model="form.lastName" placeholder="Last name"
+                         :class="['form-control form-control-lg border-0 dark-input mb-1', errors.lastName && 'is-invalid']" />
+                  <div v-if="errors.lastName" class="text-danger small mb-2">{{ errors.lastName }}</div>
+
+                  <input type="email" v-model="form.email" placeholder="E-Mail"
+                         :class="['form-control form-control-lg border-0 dark-input mb-1', errors.email && 'is-invalid']" />
+                  <div v-if="errors.email" class="text-danger small mb-2">{{ errors.email }}</div>
+
+                  <input type="email" v-model="form.confirmEmail" placeholder="Confirm E-Mail"
+                         :class="['form-control form-control-lg border-0 dark-input mb-1', errors.confirmEmail && 'is-invalid']" />
+                  <div v-if="errors.confirmEmail" class="text-danger small mb-3">{{ errors.confirmEmail }}</div>
 
                   <div class="form-check text-secondary mb-4 d-flex align-items-center gap-2">
                     <input class="form-check-input dark-checkbox fs-5 mt-0" type="checkbox" v-model="form.breakfast" id="breakfastCheck">
@@ -97,8 +108,15 @@
                     </label>
                   </div>
 
-                  <button class="btn btn-primary btn-lg w-100 fw-bold shadow-sm" @click="submitBooking">
-                    Confirm Booking
+                  <div v-if="bookingError" class="alert alert-danger text-center py-2 mb-3" role="alert">
+                    <i class="bi bi-exclamation-triangle me-2"></i>{{ bookingError }}
+                  </div>
+
+                  <button class="btn btn-primary btn-lg w-100 fw-bold shadow-sm"
+                          @click="submitBooking"
+                          :disabled="isBooking">
+                    <span v-if="isBooking" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    {{ isBooking ? 'Booking...' : 'Confirm Booking' }}
                   </button>
                 </div>
               </div>
@@ -161,6 +179,44 @@ const form = reactive({
   breakfast: false
 });
 
+const errors = reactive({
+  firstName: '',
+  lastName: '',
+  email: '',
+  confirmEmail: ''
+});
+
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const validateForm = (): boolean => {
+  errors.firstName = '';
+  errors.lastName = '';
+  errors.email = '';
+  errors.confirmEmail = '';
+
+  if (!form.firstName.trim()) {
+    errors.firstName = 'First name is required.';
+  }
+
+  if (!form.lastName.trim()) {
+    errors.lastName = 'Last name is required.';
+  }
+
+  if (!form.email.trim()) {
+    errors.email = 'E-Mail is required.';
+  } else if (!emailRegex.test(form.email.trim())) {
+    errors.email = 'Please enter a valid e-mail address.';
+  }
+
+  if (!form.confirmEmail.trim()) {
+    errors.confirmEmail = 'Please confirm your e-mail.';
+  } else if (form.email.trim() !== form.confirmEmail.trim()) {
+    errors.confirmEmail = 'The e-mail addresses do not match.';
+  }
+
+  return !errors.firstName && !errors.lastName && !errors.email && !errors.confirmEmail;
+};
+
 const today = computed(() => {
   const dt = new Date();
   return dt.toISOString().split('T')[0];
@@ -215,21 +271,62 @@ const checkAvailability = async () => {
   }
 };
 
-const submitBooking = () => {
-  if (form.email !== form.confirmEmail) {
-    alert("The email addresses do not match..");
+const isBooking = ref(false);
+const bookingError = ref('');
+
+const submitBooking = async () => {
+  if (!validateForm()) {
     return;
   }
 
-  router.push({
-    path: '/confirmation',
-    query: {
-      roomId: roomId,
-      firstName: form.firstName,
-      lastName: form.lastName,
-      email: form.email
+  isBooking.value = true;
+  bookingError.value = '';
+
+  try {
+    const response = await axios.post('http://localhost:8080/api/v1/bookings', {
+      roomId: Number(roomId),
+      firstName: form.firstName.trim(),
+      lastName: form.lastName.trim(),
+      email: form.email.trim(),
+      checkInDate: startDate.value,
+      checkOutDate: endDate.value,
+      breakfastIncluded: form.breakfast
+    });
+
+    const booking = response.data;
+
+    router.push({
+      path: '/confirmation',
+      query: {
+        bookingId: booking.id,
+        roomId: booking.roomId,
+        roomTitle: booking.roomTitle,
+        firstName: form.firstName.trim(),
+        lastName: form.lastName.trim(),
+        email: booking.guestEmail,
+        checkInDate: booking.checkInDate,
+        checkOutDate: booking.checkOutDate,
+        totalPrice: booking.totalPrice,
+        breakfastIncluded: booking.breakfastIncluded
+      }
+    });
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      if (error.response.status === 409) {
+        bookingError.value = 'This room was just booked for those dates. Please check availability again.';
+        isAvailable.value = false;
+        statusMessage.value = 'Room is unavailable.';
+      } else if (error.response.status === 400) {
+        bookingError.value = error.response.data?.error || 'Please check your booking details.';
+      } else {
+        bookingError.value = 'Something went wrong creating your booking.';
+      }
+    } else {
+      bookingError.value = 'Server connection error.';
     }
-  });
+  } finally {
+    isBooking.value = false;
+  }
 };
 </script>
 

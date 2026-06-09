@@ -19,6 +19,10 @@
                   <p class="ion-margin-bottom"><strong>First name:</strong> {{ route.query.firstName }}</p>
                   <p class="ion-margin-bottom"><strong>Last name:</strong> {{ route.query.lastName }}</p>
                   <p class="ion-no-margin"><strong>E-Mail:</strong> {{ route.query.email }}</p>
+                  <p class="ion-no-margin">
+                    <strong>Breakfast:</strong>
+                    {{ route.query.breakfastIncluded === 'true' ? 'Included' : 'Not included' }}
+                  </p>
                 </ion-card-content>
               </ion-card>
 
