@@ -289,7 +289,8 @@ const submitBooking = async () => {
       lastName: form.lastName.trim(),
       email: form.email.trim(),
       checkInDate: startDate.value,
-      checkOutDate: endDate.value
+      checkOutDate: endDate.value,
+      breakfastIncluded: form.breakfast
     });
 
     const booking = response.data;
@@ -305,7 +306,8 @@ const submitBooking = async () => {
         email: booking.guestEmail,
         checkInDate: booking.checkInDate,
         checkOutDate: booking.checkOutDate,
-        totalPrice: booking.totalPrice
+        totalPrice: booking.totalPrice,
+        breakfastIncluded: booking.breakfastIncluded
       }
     });
   } catch (error) {

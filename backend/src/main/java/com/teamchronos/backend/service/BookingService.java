@@ -66,6 +66,7 @@ public class BookingService {
                 .checkInDate(request.getCheckInDate())
                 .checkOutDate(request.getCheckOutDate())
                 .totalPrice(totalPrice)
+                .breakfastIncluded(request.isBreakfastIncluded())
                 .build());
     }
 }

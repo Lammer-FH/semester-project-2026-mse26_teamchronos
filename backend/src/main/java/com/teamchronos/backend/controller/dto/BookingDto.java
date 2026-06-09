@@ -16,4 +16,5 @@ public class BookingDto {
     LocalDate checkInDate;
     LocalDate checkOutDate;
     Float totalPrice;
+    boolean breakfastIncluded;
 }

@@ -17,6 +17,7 @@ public class BookingMapper {
                 .checkInDate(booking.getCheckInDate())
                 .checkOutDate(booking.getCheckOutDate())
                 .totalPrice(booking.getTotalPrice())
+                .breakfastIncluded(booking.isBreakfastIncluded())
                 .build();
     }
 }

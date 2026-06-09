@@ -30,4 +30,6 @@ public class CreateBookingDto {
 
     @NotNull
     LocalDate checkOutDate;
+
+    boolean breakfastIncluded;
 }
