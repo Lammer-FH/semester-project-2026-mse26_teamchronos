@@ -98,3 +98,25 @@ Used for Spring Boot config, backend setup, and debugging routing/API issues
 | "Set up the reactive state for a hotel booking form in Vue 3 script setup" | Used `reactive()` to build the form object (first name, last name, email, breakfast boolean) to track user input. |
 | "Show an error message if the availability call fails completely" | Added the else block in the catch statement to display a connection error if the network goes down. |
 
+## feature/US4-booking
+ 
+### Claude Opus 4.8:
+ 
+Used for the booking persistence flow (controller, service, DTOs), the breakfast option, the Bootstrap-to-Ionic migration of the room details page, the confirmation page, and frontend/data debugging.
+ 
+| Documented Prompt | Implementation Summary |
+| --- | --- |
+| "Generate example data.sql INSERT statements for the Booking and Guest entities" | Produced seed inserts aligned to the entity fields and the existing rooms/extras data, with `total_price` set consistently to price per night times number of nights. |
+| "Getting H2 error: Column 'ROOMID' not found when seeding bookings" | Identified Spring Boot's default snake_case physical naming strategy overriding the explicit `@JoinColumn` names; corrected the SQL columns to `room_id` / `guest_id`. |
+| "Add form validation (especially email) to the room booking form" | Added a per-field `errors` object and a `validateForm()` checking required fields, email format, and email-confirmation match, with inline error messages replacing the blocking alert. |
+| "Write a BookingController with a POST /bookings endpoint, using the existing controllers as a guide" | Created `BookingController` (`POST /api/v1/bookings`) plus `CreateBookingDto` (validated input), `BookingDto` (response), and `BookingMapper`, mirroring the existing Room controller/mapper patterns. |
+| "Adapt the RoomPage frontend to POST the booking" | Replaced the navigation-only submit with an async axios POST, handling 201/409/400 responses and adding a submitting/loading state. |
+| "Adapt the backend to have a breakfastIncluded boolean" | Threaded the flag through the `Booking` entity, `CreateBookingDto`, `BookingDto`, `BookingMapper`, and `createBooking`, plus updated the `data.sql` seed rows with the new column. |
+
+## feature/US5-booking-confirmation
+ 
+### Claude Opus 4.8:
+
+| Documented Prompt | Implementation Summary |
+| --- | --- |
+| "Make the confirmation page include full room details" | Fetched the full room object (image, title, extras, description) instead of just the title and rendered all required sections. |
