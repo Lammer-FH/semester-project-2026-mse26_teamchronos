@@ -1,4 +1,4 @@
-### 1. Feature Development
+### 1. Feature Development in general
 
 #### Generate Dummy Data for H2DB
 * **Tool:** ChatGPT
@@ -18,7 +18,7 @@
 * **Decision:** **Rejected, then Modified.**
 * **Why:** An initial design suggesting a backend database DTO modification to fetch a `totalPages` value was rejected to avoid rewriting stable backend code. The component structure was modified to run client-side logic checking page size vs array thresholds (`rooms.length < pageSize`), styled with arrows.
 ---
-### 2. Debugging & Troubleshooting
+### 2. Debugging & Troubleshooting in general
 
 #### Data Deserialization Alignment
 * **Tool:** Gemini AI
@@ -26,7 +26,7 @@
 * **Decision:** **Modified.**
 * **Why:** While the database entity used `imagePath`, the backend DTO decoupled the name to serialize as `"image"`. The frontend mapping logic was updated to map directly to `room.image` while prepending the server port prefix.
 ---
-### 3. UI/UX Refactoring
+### 3. UI/UX Refactoring in general
 
 #### Responsive Framework Migration
 * **Tool:** Gemini AI
@@ -40,6 +40,7 @@
 * **Decision:** **Modified.**
 * **Why:** Hamburger menu was not needed. The design was flattened into a clean `<ion-toolbar>`.
 
+### 4. Feature Development in detail per story in feature branch
 
 ## feature/US1-hotel-website
 
@@ -120,3 +121,21 @@ Used for the booking persistence flow (controller, service, DTOs), the breakfast
 | Documented Prompt | Implementation Summary |
 | --- | --- |
 | "Make the confirmation page include full room details" | Fetched the full room object (image, title, extras, description) instead of just the title and rendered all required sections. |
+
+### 5. Pre-development phase 
+
+## Checking paper prototype against usability heuristics
+ 
+### ChatGPT:
+
+| Documented Prompt | Implementation Summary |
+| --- | --- |
+| "Check this paper prototype in terms of usability and UX. The 10 heuristics in https://www.nngroup.com/articles/ten-usability-heuristics/ must be met. Give me a report with an estimation per heuristic on how much it is met. In the report you must also describe improvements that can be made and what heuristic is linked to the improvement. Generate a png with an improved prototype." | Produced report with prioritized improvement ideas and evaluation per heuristik, generated png file of improved prototype. |
+
+## Checking data base design and API definition against best practices
+ 
+### ChatGPT:
+
+| Documented Prompt | Implementation Summary |
+| --- | --- |
+| "Check these 2 specifications of the APIs and the database for consistency, logic and synergy. Check these 2 speicificatins for guidlines for clean architecture, good data base design and api calls. Give a list of improvement ideas with a priority and rationale." | Produced a list of prioritized improvement ideas with rationale and evaluation with X out of 10 for architecture and API best practice. |
