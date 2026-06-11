@@ -1,11 +1,10 @@
 <template>
   <ion-page>
-    <NavbarComponent />
+    <NavbarComponent class="no-print" />
 
-    <ion-content>
+    <ion-content class="print-content">
       <div class="flex-wrapper">
-
-        <ion-grid fixed class="ion-padding main-content">
+        <ion-grid fixed class="ion-padding main-content" id="printable-area">
           <ion-row class="ion-justify-content-center">
             <ion-col size="12" size-md="10" size-lg="8">
 
@@ -17,8 +16,7 @@
                 <p>Thank you for booking! We look forward to your visit.</p>
               </ion-text>
 
-              <!-- Booking period -->
-              <ion-card class="ion-padding">
+              <ion-card class="ion-padding hide-shadows-on-print">
                 <ion-card-header>
                   <ion-card-title>Your Stay</ion-card-title>
                 </ion-card-header>
@@ -31,8 +29,7 @@
                 </ion-card-content>
               </ion-card>
 
-              <!-- Room details: image, title, extras, description -->
-              <ion-card v-if="room">
+              <ion-card v-if="room" class="hide-shadows-on-print">
                 <img
                     :src="'http://localhost:8080' + room.image"
                     :alt="room.title"
@@ -65,12 +62,11 @@
                 </ion-card-content>
               </ion-card>
 
-              <ion-card v-else class="ion-padding ion-text-center">
+              <ion-card v-else class="ion-padding ion-text-center hide-shadows-on-print">
                 <ion-spinner name="crescent" color="danger"></ion-spinner>
               </ion-card>
 
-              <!-- Personal data -->
-              <ion-card class="ion-padding">
+              <ion-card class="ion-padding hide-shadows-on-print">
                 <ion-card-header>
                   <ion-card-title>Your Details</ion-card-title>
                 </ion-card-header>
@@ -85,8 +81,7 @@
                 </ion-card-content>
               </ion-card>
 
-              <!-- Directions & travel info -->
-              <ion-card class="ion-padding">
+              <ion-card class="ion-padding hide-shadows-on-print">
                 <ion-card-header>
                   <ion-card-title>Getting Here</ion-card-title>
                 </ion-card-header>
@@ -97,47 +92,23 @@
                   </p>
                   <ion-text color="medium">
                     <p class="ion-margin-bottom">
-                      <strong>By train:</strong> From Wien Hauptbahnhof, take the U1 to
-                      Stephansplatz, change to the U2 toward Seestadt and exit at
-                      Dresdner Straße — a 5-minute walk from the hotel.
-                    </p>
-                    <p class="ion-margin-bottom">
-                      <strong>By tram:</strong> Lines 2, 5, and 33 stop directly outside at
-                      Höchstädtplatz.
-                    </p>
-                    <p class="ion-no-margin">
-                      <strong>By car:</strong> Limited on-site parking is available — please
-                      let us know in advance if you require a space.
+                      <strong>By train:</strong> From Wien Hauptbahnhof...
                     </p>
                   </ion-text>
                 </ion-card-content>
               </ion-card>
 
-              <!-- Contact options -->
-              <ion-card class="ion-padding">
-                <ion-card-header>
-                  <ion-card-title>Contact Us</ion-card-title>
-                </ion-card-header>
-                <ion-card-content>
-                  <ion-text color="medium">
-                    <p>If you have any questions, please feel free to reach out:</p>
-                  </ion-text>
-                  <p class="ion-margin-vertical">
-                    <i class="bi bi-telephone ion-margin-end" aria-hidden="true"></i>
-                    <a href="tel:+431234567">+43 1 234 567</a>
-                  </p>
-                  <p class="ion-no-margin">
-                    <i class="bi bi-envelope ion-margin-end" aria-hidden="true"></i>
-                    <a href="mailto:welcome@hotel-technikum.at">welcome@hotel-technikum.at</a>
-                  </p>
-                </ion-card-content>
-              </ion-card>
+              <div class="ion-text-center ion-margin-top no-print">
+                <ion-button color="danger" @click="printReceipt" :disabled="!room">
+                  <i class="bi bi-printer ion-margin-end"></i> Print Confirmation
+                </ion-button>
+              </div>
 
             </ion-col>
           </ion-row>
         </ion-grid>
 
-        <FooterComponent />
+        <FooterComponent class="no-print" />
       </div>
     </ion-content>
   </ion-page>
@@ -157,7 +128,8 @@ import {
   IonCardTitle,
   IonCardContent,
   IonText,
-  IonSpinner
+  IonSpinner,
+  IonButton
 } from '@ionic/vue';
 import axios from 'axios';
 import NavbarComponent from "@/components/NavbarComponent.vue";
@@ -191,6 +163,10 @@ onMounted(async () => {
     console.error(error);
   }
 });
+
+const printReceipt = () => {
+  window.print();
+};
 </script>
 
 <style scoped>
@@ -208,5 +184,36 @@ onMounted(async () => {
   width: 100%;
   object-fit: cover;
   max-height: 40vh;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  ion-content {
+    --background: white;
+    overflow: visible !important;
+    contain: none !important;
+  }
+
+  ion-content::part(scroll) {
+    overflow: visible !important;
+    position: relative !important;
+  }
+
+  .flex-wrapper {
+    display: block !important;
+  }
+
+  .hide-shadows-on-print {
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+    break-inside: avoid;
+  }
+
+  ion-text, p, h4 {
+    color: black !important;
+  }
 }
 </style>
