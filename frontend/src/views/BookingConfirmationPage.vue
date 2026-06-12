@@ -39,13 +39,13 @@
                   <ion-card-title>{{ room.title }}</ion-card-title>
                 </ion-card-header>
                 <ion-card-content>
-                  <ion-row class="ion-margin-bottom">
-                    <ion-text color="dark" class="ion-margin-end">
-                      <i :class="room.capacity === 1 ? 'bi bi-person' : 'bi bi-people'"></i>
+                  <ion-row class="ion-margin-bottom ion-align-items-center">
+                    <ion-text color="dark" class="ion-margin-end" style="display: flex; align-items: center; gap: 4px;">
+                      <ion-icon :icon="room.capacity === 1 ? person : people"></ion-icon>
                       Up to {{ room.capacity }} {{ room.capacity === 1 ? 'Guest' : 'Guests' }}
                     </ion-text>
-                    <ion-text color="dark">
-                      <i class="bi bi-tag"></i>
+                    <ion-text color="dark" style="display: flex; align-items: center; gap: 4px;">
+                      <ion-icon :icon="pricetag"></ion-icon>
                       {{ room.pricePerNight }} € / Night
                     </ion-text>
                   </ion-row>
@@ -86,8 +86,8 @@
                   <ion-card-title>Getting Here</ion-card-title>
                 </ion-card-header>
                 <ion-card-content>
-                  <p class="ion-margin-bottom">
-                    <i class="bi bi-geo-alt ion-margin-end" aria-hidden="true"></i>
+                  <p class="ion-margin-bottom" style="display: flex; align-items: center; gap: 8px;">
+                    <ion-icon :icon="location" aria-hidden="true"></ion-icon>
                     <span>Höchstädtplatz 6, 1200 Vienna, Austria</span>
                   </p>
                   <ion-text color="medium">
@@ -100,7 +100,7 @@
 
               <div class="ion-text-center ion-margin-top no-print">
                 <ion-button color="danger" @click="printReceipt" :disabled="!room">
-                  <i class="bi bi-printer ion-margin-end"></i> Print Confirmation
+                  <ion-icon :icon="print" class="ion-margin-end"></ion-icon> Print Confirmation
                 </ion-button>
               </div>
 
@@ -129,8 +129,16 @@ import {
   IonCardContent,
   IonText,
   IonSpinner,
-  IonButton
+  IonButton,
+  IonIcon
 } from '@ionic/vue';
+import {
+  person,
+  people,
+  pricetag,
+  location,
+  print
+} from 'ionicons/icons';
 import axios from 'axios';
 import NavbarComponent from "@/components/NavbarComponent.vue";
 import FooterComponent from "@/components/FooterComponent.vue";
