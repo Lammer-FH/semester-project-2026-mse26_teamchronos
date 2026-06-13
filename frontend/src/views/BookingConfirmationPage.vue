@@ -20,11 +20,11 @@
                 <ion-card-header>
                   <ion-card-title>Your Stay</ion-card-title>
                 </ion-card-header>
-                <ion-card-content>
-                  <p class="ion-margin-bottom"><strong>Check-In:</strong> {{ route.query.checkInDate }}</p>
-                  <p class="ion-margin-bottom"><strong>Check-Out:</strong> {{ route.query.checkOutDate }}</p>
-                  <p class="ion-no-margin" v-if="route.query.totalPrice">
-                    <strong>Total Price:</strong> {{ route.query.totalPrice }} €
+                <ion-card-content v-if="booking">
+                  <p class="ion-margin-bottom"><strong>Check-In:</strong> {{ booking.checkInDate }}</p>
+                  <p class="ion-margin-bottom"><strong>Check-Out:</strong> {{ booking.checkOutDate }}</p>
+                  <p class="ion-no-margin" v-if="booking.totalPrice">
+                    <strong>Total Price:</strong> {{ booking.totalPrice }} €
                   </p>
                 </ion-card-content>
               </ion-card>
@@ -70,13 +70,13 @@
                 <ion-card-header>
                   <ion-card-title>Your Details</ion-card-title>
                 </ion-card-header>
-                <ion-card-content>
-                  <p class="ion-margin-bottom"><strong>First name:</strong> {{ route.query.firstName }}</p>
-                  <p class="ion-margin-bottom"><strong>Last name:</strong> {{ route.query.lastName }}</p>
-                  <p class="ion-margin-bottom"><strong>E-Mail:</strong> {{ route.query.email }}</p>
+                <ion-card-content v-if="booking">
+                  <p class="ion-margin-bottom"><strong>First name:</strong> {{ booking.firstName }}</p>
+                  <p class="ion-margin-bottom"><strong>Last name:</strong> {{ booking.lastName }}</p>
+                  <p class="ion-margin-bottom"><strong>E-Mail:</strong> {{ booking.email || booking.guestEmail }}</p>
                   <p class="ion-no-margin">
                     <strong>Breakfast:</strong>
-                    {{ route.query.breakfastIncluded === 'true' ? 'Included' : 'Not included' }}
+                    {{ booking.breakfastIncluded === true || booking.breakfastIncluded === 'true' ? 'Included' : 'Not included' }}
                   </p>
                 </ion-card-content>
               </ion-card>
@@ -116,7 +116,6 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
 import {
   IonPage,
   IonContent,
@@ -142,6 +141,7 @@ import {
 import axios from 'axios';
 import NavbarComponent from "@/components/NavbarComponent.vue";
 import FooterComponent from "@/components/FooterComponent.vue";
+import { useBookingStore } from '@/stores/bookingStore';
 
 interface Extra {
   id: number;
@@ -159,16 +159,19 @@ interface RoomData {
   extras: Extra[];
 }
 
-const route = useRoute();
+const bookingStore = useBookingStore();
+const booking = bookingStore.latestBooking;
+
 const room = ref<RoomData | null>(null);
 
 onMounted(async () => {
-  const roomId = route.query.roomId;
-  try {
-    const response = await axios.get(`http://localhost:8080/api/v1/rooms/${roomId}`);
-    room.value = response.data;
-  } catch (error) {
-    console.error(error);
+  if (booking && booking.roomId) {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/v1/rooms/${booking.roomId}`);
+      room.value = response.data;
+    } catch (error) {
+      console.error(error);
+    }
   }
 });
 
