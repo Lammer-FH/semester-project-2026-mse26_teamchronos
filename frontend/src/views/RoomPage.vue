@@ -4,131 +4,142 @@
 
     <ion-content>
       <div v-if="room">
-        <div class="container-fluid p-0">
+        <div class="hero-container">
           <img
               :src="'http://localhost:8080' + room.image"
-              class="img-fluid w-100 room-hero-img"
+              class="room-hero-img"
               :alt="room.title"
           />
         </div>
 
-        <div class="container mt-5 px-4 mb-5">
-          <div class="row justify-content-center">
-            <div class="col-12 col-md-10 col-lg-8">
-              <p class="text-uppercase text-center text-secondary fw-bold tracking-wide mb-2">Room Details</p>
-              <h4 class="fw-bold text-white text-center text-uppercase tracking-wide mb-4">
+        <ion-grid class="ion-padding-bottom">
+          <ion-row class="ion-justify-content-center">
+            <ion-col size="12" size-md="10" size-lg="8" class="ion-padding-horizontal">
+
+              <p class="text-uppercase text-center text-secondary fw-bold tracking-wide ion-no-margin ion-margin-top ion-margin-bottom">
+                Room Details
+              </p>
+              <h4 class="fw-bold text-white text-center text-uppercase tracking-wide ion-no-margin ion-margin-bottom">
                 {{ room.title }}
               </h4>
 
-              <div class="d-flex justify-content-center gap-4 text-light mb-3">
-                <span class="d-flex align-items-center gap-2">
+              <div class="info-badges-container">
+                <span class="info-badge">
                   <i :class="room.capacity === 1 ? 'bi bi-person fs-5' : 'bi bi-people fs-5'"></i>
                   Up to {{ room.capacity }} {{ room.capacity === 1 ? 'Guest' : 'Guests' }}
                 </span>
-                <span class="d-flex align-items-center gap-2">
+                <span class="info-badge">
                   <i class="bi bi-tag fs-5"></i>
                   From {{ room.pricePerNight }} € / Night
                 </span>
               </div>
 
-              <p class="text-secondary text-center mx-auto mb-4 fs-5">
+              <p class="text-secondary text-center description-text ion-margin-bottom">
                 {{ room.description }}
               </p>
 
-              <div class="d-flex justify-content-center flex-wrap gap-4 text-secondary mb-5">
-                <span v-for="extra in room.extras" :key="extra.id" class="d-flex align-items-center gap-2">
+              <div class="extras-container">
+                <span v-for="extra in room.extras" :key="extra.id" class="extra-item">
                   <i :class="'bi ' + extra.icon + ' fs-5'"></i> {{ extra.name }}
                 </span>
               </div>
 
-              <div class="card card-dark-bg border-0 shadow-sm p-4 mb-4">
-                <h4 class="card-title text-center text-white mb-4">Check Availability</h4>
+              <ion-card class="card-dark-bg ion-no-margin ion-margin-bottom ion-padding">
+                <h4 class="text-center text-white ion-no-margin ion-margin-bottom">Check Availability</h4>
 
-                <div class="row g-3 mb-4">
-                  <div class="col-6">
-                    <label class="form-label text-secondary small fw-bold text-uppercase">Check-In</label>
-                    <input
-                        type="date"
-                        v-model="startDate"
-                        :min="today"
-                        class="form-control form-control-lg border-0 dark-input"
-                    />
-                  </div>
-                  <div class="col-6">
-                    <label class="form-label text-secondary small fw-bold text-uppercase">Check-Out</label>
-                    <input
-                        type="date"
-                        v-model="endDate"
-                        :min="startDate || today"
-                        class="form-control form-control-lg border-0 dark-input"
-                    />
-                  </div>
-                </div>
+                <ion-grid class="ion-no-padding ion-margin-bottom">
+                  <ion-row style="margin: 0 -8px;">
+                    <ion-col size="6" style="padding: 0 8px;">
+                      <label class="input-label">Check-In</label>
+                      <input
+                          type="date"
+                          v-model="startDate"
+                          :min="today"
+                          class="dark-custom-input"
+                      />
+                    </ion-col>
+                    <ion-col size="6" style="padding: 0 8px;">
+                      <label class="input-label">Check-Out</label>
+                      <input
+                          type="date"
+                          v-model="endDate"
+                          :min="startDate || today"
+                          class="dark-custom-input"
+                      />
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
 
-                <div v-if="statusMessage" :class="['alert text-center py-2 mb-4', isAvailable ? 'alert-success' : 'alert-danger']" role="alert">
+                <div v-if="statusMessage" :class="['status-alert', isAvailable ? 'alert-success' : 'alert-danger']">
                   <i :class="['bi me-2', isAvailable ? 'bi-check-circle' : 'bi-exclamation-triangle']"></i>
                   {{ statusMessage }}
                 </div>
 
-                <button
+                <ion-button
                     v-if="!isAvailable"
-                    class="btn btn-danger"
+                    expand="block"
+                    color="danger"
+                    class="fw-bold text-uppercase"
                     @click="checkAvailability"
                     :disabled="isLoading"
                 >
-                  <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  <ion-spinner v-if="isLoading" name="crescent" size="small" class="ion-margin-end"></ion-spinner>
                   {{ isLoading ? 'Checking...' : 'Check Now' }}
-                </button>
-              </div>
+                </ion-button>
+              </ion-card>
 
-              <div v-if="isAvailable" class="card card-dark-bg border-0 shadow-sm p-4 mt-4">
-                <h5 class="fw-bold text-white text-center text-uppercase tracking-wide mb-4">Booking</h5>
+              <ion-card v-if="isAvailable" class="card-dark-bg ion-no-margin ion-margin-top ion-padding">
+                <h5 class="fw-bold text-white text-center text-uppercase tracking-wide ion-no-margin ion-margin-bottom">
+                  Booking
+                </h5>
 
-                <div class="mb-3">
+                <div class="form-container">
                   <input type="text" v-model="form.firstName" placeholder="First name"
-                         :class="['form-control form-control-lg border-0 dark-input mb-1', errors.firstName && 'is-invalid']" />
-                  <div v-if="errors.firstName" class="text-danger small mb-2">{{ errors.firstName }}</div>
+                         :class="['dark-custom-input', errors.firstName && 'is-invalid-input']" />
+                  <div v-if="errors.firstName" class="text-danger small-error">{{ errors.firstName }}</div>
 
                   <input type="text" v-model="form.lastName" placeholder="Last name"
-                         :class="['form-control form-control-lg border-0 dark-input mb-1', errors.lastName && 'is-invalid']" />
-                  <div v-if="errors.lastName" class="text-danger small mb-2">{{ errors.lastName }}</div>
+                         :class="['dark-custom-input', errors.lastName && 'is-invalid-input']" />
+                  <div v-if="errors.lastName" class="text-danger small-error">{{ errors.lastName }}</div>
 
                   <input type="email" v-model="form.email" placeholder="E-Mail"
-                         :class="['form-control form-control-lg border-0 dark-input mb-1', errors.email && 'is-invalid']" />
-                  <div v-if="errors.email" class="text-danger small mb-2">{{ errors.email }}</div>
+                         :class="['dark-custom-input', errors.email && 'is-invalid-input']" />
+                  <div v-if="errors.email" class="text-danger small-error">{{ errors.email }}</div>
 
                   <input type="email" v-model="form.confirmEmail" placeholder="Confirm E-Mail"
-                         :class="['form-control form-control-lg border-0 dark-input mb-1', errors.confirmEmail && 'is-invalid']" />
-                  <div v-if="errors.confirmEmail" class="text-danger small mb-3">{{ errors.confirmEmail }}</div>
+                         :class="['dark-custom-input', errors.confirmEmail && 'is-invalid-input']" />
+                  <div v-if="errors.confirmEmail" class="text-danger small-error">{{ errors.confirmEmail }}</div>
 
-                  <div class="form-check text-secondary mb-4 d-flex align-items-center gap-2">
-                    <input class="form-check-input dark-checkbox fs-5 mt-0" type="checkbox" v-model="form.breakfast" id="breakfastCheck">
-                    <label class="form-check-label pt-1" for="breakfastCheck">
+                  <div class="checkbox-container">
+                    <input class="dark-custom-checkbox" type="checkbox" v-model="form.breakfast" id="breakfastCheck">
+                    <label class="checkbox-label" for="breakfastCheck">
                       Breakfast
                     </label>
                   </div>
 
-                  <div v-if="bookingError" class="alert alert-danger text-center py-2 mb-3" role="alert">
+                  <div v-if="bookingError" class="status-alert alert-danger mb-3">
                     <i class="bi bi-exclamation-triangle me-2"></i>{{ bookingError }}
                   </div>
 
-                  <button class="btn btn-primary btn-lg w-100 fw-bold shadow-sm"
-                          @click="submitBooking"
-                          :disabled="isBooking">
-                    <span v-if="isBooking" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  <ion-button
+                      expand="block"
+                      color="primary"
+                      class="fw-bold text-uppercase"
+                      @click="submitBooking"
+                      :disabled="isBooking"
+                  >
+                    <ion-spinner v-if="isBooking" name="crescent" size="small" class="ion-margin-end"></ion-spinner>
                     {{ isBooking ? 'Booking...' : 'Confirm Booking' }}
-                  </button>
+                  </ion-button>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
+              </ion-card>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </div>
 
-      <div v-else class="d-flex justify-content-center align-items-center min-vh-100">
-        <div class="spinner-border text-danger" role="status">
-          <span class="visually-hidden">Loading rooms...</span>
-        </div>
+      <div v-else class="loading-wrapper">
+        <ion-spinner name="crescent" color="danger"></ion-spinner>
       </div>
 
       <FooterComponent />
@@ -139,10 +150,11 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { IonPage, IonContent } from '@ionic/vue';
+import { IonPage, IonContent, IonGrid, IonRow, IonCol, IonCard, IonButton, IonSpinner } from '@ionic/vue';
 import axios from 'axios';
 import NavbarComponent from "@/components/NavbarComponent.vue";
 import FooterComponent from "@/components/FooterComponent.vue";
+import { useBookingStore } from '@/stores/bookingStore';
 
 interface Extra {
   id: number;
@@ -163,6 +175,7 @@ interface RoomData {
 const route = useRoute();
 const router = useRouter();
 const roomId = route.params.id;
+const bookingStore = useBookingStore();
 
 const room = ref<RoomData | null>(null);
 const startDate = ref('');
@@ -293,23 +306,13 @@ const submitBooking = async () => {
       breakfastIncluded: form.breakfast
     });
 
-    const booking = response.data;
-
-    router.push({
-      path: '/confirmation',
-      query: {
-        bookingId: booking.id,
-        roomId: booking.roomId,
-        roomTitle: booking.roomTitle,
-        firstName: form.firstName.trim(),
-        lastName: form.lastName.trim(),
-        email: booking.guestEmail,
-        checkInDate: booking.checkInDate,
-        checkOutDate: booking.checkOutDate,
-        totalPrice: booking.totalPrice,
-        breakfastIncluded: booking.breakfastIncluded
-      }
+    bookingStore.setLatestBooking({
+      ...response.data,
+      firstName: form.firstName.trim(),
+      lastName: form.lastName.trim()
     });
+
+    router.push('/confirmation');
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       if (error.response.status === 409) {
@@ -336,39 +339,183 @@ ion-content {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
+.hero-container {
+  width: 100%;
+  padding: 0;
+}
+
 .room-hero-img {
+  width: 100%;
   object-fit: cover;
   max-height: 50vh;
+  display: block;
+}
+
+.fw-bold {
+  font-weight: bold;
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-secondary {
+  color: #888888;
+}
+
+.text-white {
+  color: #ffffff;
 }
 
 .tracking-wide {
   letter-spacing: 0.1em;
 }
 
-.card-dark-bg {
-  background-color: #1e1e1e !important;
+.info-badges-container {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  color: #f4f5f8;
+  margin-bottom: 16px;
 }
 
-.dark-input {
+.info-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fs-5 {
+  font-size: 1.25rem;
+}
+
+.description-text {
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+.extras-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  color: #888888;
+  margin-bottom: 40px;
+}
+
+.extra-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-dark-bg {
+  background: #1e1e1e !important;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.input-label {
+  color: #888888;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.dark-custom-input {
   background-color: #2c2c2c !important;
   color: #ffffff !important;
+  border: none;
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  margin-bottom: 12px;
 }
 
-.dark-input::placeholder {
-  color: #888888;
+.dark-custom-input::placeholder {
+  color: #666666;
 }
 
-.dark-input::-webkit-calendar-picker-indicator {
+.dark-custom-input::-webkit-calendar-picker-indicator {
   filter: invert(1);
 }
 
-.dark-checkbox {
-  background-color: #2c2c2c;
-  border-color: #444;
+.is-invalid-input {
+  border: 1px solid #eb445a !important;
 }
 
-.dark-checkbox:checked {
-  background-color: #0d6efd;
-  border-color: #0d6efd;
+.small-error {
+  color: #eb445a;
+  font-size: 0.85rem;
+  margin-top: -8px;
+  margin-bottom: 12px;
+  padding-left: 4px;
+}
+
+.status-alert {
+  padding: 12px;
+  border-radius: 6px;
+  text-align: center;
+  margin-bottom: 16px;
+  font-size: 0.95rem;
+}
+
+.alert-success {
+  background-color: rgba(45, 211, 111, 0.15);
+  color: #2dd36f;
+}
+
+.alert-danger {
+  background-color: rgba(235, 68, 90, 0.15);
+  color: #eb445a;
+}
+
+.form-container {
+  margin-top: 16px;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #888888;
+  margin-top: 8px;
+  margin-bottom: 24px;
+}
+
+.dark-custom-checkbox {
+  width: 20px;
+  height: 20px;
+  background-color: #2c2c2c;
+  border: 1px solid #444;
+  accent-color: #3880ff;
+  cursor: pointer;
+}
+
+.checkbox-label {
+  cursor: pointer;
+  user-select: none;
+}
+
+.loading-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-vh: 100vh;
+}
+
+.ion-margin-end {
+  margin-inline-end: 8px;
 }
 </style>
